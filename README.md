@@ -2,7 +2,7 @@
 
 `https://portal.workers.dreamlabs.co.kr/`에 게시되는 DreamLabs Worker 생태계의 공개
 정적 안내 허브다. 역할별 Worker, WorkerOps, Worker Host, Worker Gateway, Worker Meet,
-Worker Manual, Worker UI/UX Assets와 연결 업무 시스템을 설명하고 올바른 대표 주소로
+Worker Manual, DreamLabs Assets와 연결 업무 시스템을 설명하고 올바른 대표 주소로
 이동시킨다.
 
 ## Current state
@@ -25,7 +25,7 @@ Portal
 ├─ Workers       역할별 Worker 디렉터리
 ├─ WorkerOps     운영 관점과 하위 시스템 책임
 ├─ Ecosystem     Host, Gateway, Meet, Manual, Assets, HR 연결
-├─ Learn         사용자 안내와 UI/UX 표준
+├─ Learn         사용자 안내와 DreamLabs Asset Pack
 ├─ About         Portal 공개·보안 경계
 └─ Portal status 정적 artifact와 링크 검토 정보
 ```
@@ -35,7 +35,7 @@ Portal
 ```text
 site/                 deployable static files only
 schemas/              public directory contracts
-config/asset-lock.json UI/UX reference and local asset packaging policy
+config/asset-lock.json Asset Pack provenance and runtime-use policy
 scripts/              validation, deterministic packaging, local server
 tests/                static contract tests
 docs/                 data, architecture and operating boundaries
@@ -62,5 +62,7 @@ and external acceptance are separate states. A commit or successful build alone 
 deployment evidence. See [DATA-CONTRACT.md](docs/DATA-CONTRACT.md),
 [ARCHITECTURE.md](docs/ARCHITECTURE.md), and [OPERATIONS.md](docs/OPERATIONS.md).
 
-The accepted v1 source is preserved by tag `portal-v1-accepted-20261013`. The v2 design
-record remains under [`docs/redesign/`](docs/redesign/README.md).
+The accepted v1 source is preserved by tag `portal-v1-accepted-20261013`. The accepted
+v2 source before the Asset Pack correction is preserved by tag
+`portal-v2-before-dreamlabs-assets-20261013`. The v2 design record remains under
+[`docs/redesign/`](docs/redesign/README.md).

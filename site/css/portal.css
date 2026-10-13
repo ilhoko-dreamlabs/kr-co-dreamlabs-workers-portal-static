@@ -1,30 +1,30 @@
 :root {
   color-scheme: light;
-  --bg: #f4f6f8;
+  --bg: #f6f8fb;
   --surface: #ffffff;
-  --surface-soft: #eef5f7;
-  --surface-night: #0d1a24;
-  --text: #17212b;
-  --muted: #5b6875;
-  --line: #d5dde5;
-  --line-strong: #b7c7d2;
-  --accent: #2f6e83;
-  --accent-strong: #18566c;
-  --accent-soft: #e2f1f4;
-  --sky: #3e82af;
-  --sky-soft: #f0f7ff;
-  --mint: #268b72;
-  --mint-soft: #effaf6;
-  --amber: #9c671e;
-  --amber-soft: #fff7e8;
-  --violet: #626fb2;
-  --violet-soft: #f3f4ff;
-  --danger: #b54457;
-  --shadow-sm: 0 10px 24px rgba(13, 26, 36, 0.06);
-  --shadow-lg: 0 24px 70px rgba(13, 26, 36, 0.12);
-  --radius-sm: 10px;
-  --radius: 18px;
-  --radius-lg: 28px;
+  --surface-soft: #f3f8fb;
+  --surface-night: #08111f;
+  --text: #1c2430;
+  --muted: #667085;
+  --line: #d9e0ea;
+  --line-strong: #cddfe8;
+  --accent: #2457c5;
+  --accent-strong: #1748a6;
+  --accent-soft: #e8f0ff;
+  --sky: #38bdf8;
+  --sky-soft: #e0f2fe;
+  --mint: #0d9488;
+  --mint-soft: #ccfbf1;
+  --amber: #8a6500;
+  --amber-soft: #fff7dd;
+  --violet: #d9343f;
+  --violet-soft: #fff0f1;
+  --danger: #d9343f;
+  --shadow-sm: 0 12px 28px rgba(28, 36, 48, 0.08);
+  --shadow-lg: 0 14px 34px rgba(8, 17, 31, 0.12);
+  --radius-sm: 8px;
+  --radius: 8px;
+  --radius-lg: 16px;
   --canvas: 1240px;
 }
 
@@ -45,6 +45,16 @@ button, input { font: inherit; }
 a { color: inherit; }
 img, svg { display: block; max-width: 100%; }
 code { font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace; }
+
+.section-note {
+  margin: -10px 0 28px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--amber);
+  border-radius: var(--radius-sm);
+  background: var(--amber-soft);
+  color: var(--muted);
+}
 
 .skip-link {
   position: fixed;
@@ -74,8 +84,8 @@ code { font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace; }
   position: sticky;
   z-index: 100;
   top: 0;
-  border-bottom: 1px solid rgba(213, 221, 229, 0.88);
-  background: rgba(244, 246, 248, 0.92);
+  border-bottom: 1px solid rgba(217, 224, 234, 0.92);
+  background: rgba(246, 248, 251, 0.94);
   backdrop-filter: blur(16px);
 }
 .header-inner {
@@ -94,7 +104,15 @@ code { font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace; }
   gap: 11px;
   text-decoration: none;
 }
-.brand img { width: 38px; height: 38px; }
+.brand img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
 .brand-copy { display: grid; line-height: 1.15; }
 .brand-copy strong { font-size: 14px; letter-spacing: 0.04em; }
 .brand-copy small { color: var(--muted); font-size: 10px; font-weight: 750; letter-spacing: 0.14em; }
@@ -133,7 +151,7 @@ code { font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace; }
 .button-quiet { border-color: var(--line); background: transparent; color: var(--accent-strong); }
 .header-action:hover,
 .button:hover { transform: translateY(-1px); }
-.button-primary:hover { background: #173142; }
+.button-primary:hover { background: #1d2939; }
 .button-secondary:hover,
 .button-quiet:hover { border-color: var(--accent); background: var(--accent-soft); }
 .menu-toggle {
@@ -179,7 +197,7 @@ main { overflow: hidden; }
   width: 520px;
   height: 520px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(62, 130, 175, 0.17), rgba(47, 110, 131, 0) 68%);
+  background: radial-gradient(circle, rgba(36, 87, 197, 0.16), rgba(36, 87, 197, 0) 68%);
   pointer-events: none;
 }
 .hero-grid {
@@ -219,9 +237,9 @@ main { overflow: hidden; }
   position: relative;
   min-height: 430px;
   padding: 30px;
-  border: 1px solid rgba(213, 221, 229, 0.7);
+  border: 1px solid rgba(205, 223, 232, 0.7);
   border-radius: var(--radius-lg);
-  background: linear-gradient(155deg, #122430, #08131c 78%);
+  background: linear-gradient(155deg, #101828, #08111f 78%);
   box-shadow: var(--shadow-lg);
   color: #fff;
   overflow: hidden;
@@ -234,7 +252,7 @@ main { overflow: hidden; }
   width: 360px;
   height: 360px;
   border-radius: 50%;
-  background: rgba(38, 139, 114, 0.24);
+  background: rgba(163, 230, 53, 0.16);
   filter: blur(8px);
 }
 .visual-label { color: #8fb2c0; font: 800 10px/1.2 "Cascadia Code", monospace; letter-spacing: 0.12em; }
@@ -253,8 +271,8 @@ main { overflow: hidden; }
 }
 .map-node strong { font-size: 13px; }
 .map-node small { color: #9bb2bd; font-size: 10px; }
-.map-node.is-primary { border-color: rgba(101, 204, 181, 0.65); background: rgba(38, 139, 114, 0.22); }
-.map-node.is-portal { border-color: rgba(117, 185, 225, 0.65); background: rgba(62, 130, 175, 0.22); }
+.map-node.is-primary { border-color: rgba(45, 212, 191, 0.58); background: rgba(13, 148, 136, 0.22); }
+.map-node.is-portal { border-color: rgba(56, 189, 248, 0.62); background: rgba(56, 189, 248, 0.16); }
 .map-connector { height: 22px; display: grid; place-items: center; color: #77a5b8; font: 800 16px/1 monospace; }
 .visual-boundary { position: relative; margin-top: 19px; padding-top: 17px; border-top: 1px solid rgba(173, 217, 229, 0.15); color: #8fa7b2; font-size: 11px; }
 
@@ -370,7 +388,7 @@ main { overflow: hidden; }
   border-radius: var(--radius-sm);
   background: var(--surface);
 }
-.search-field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(47, 110, 131, 0.13); }
+.search-field:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(36, 87, 197, 0.13); }
 .search-field span { color: var(--accent); font-size: 17px; }
 .search-field input { width: 100%; min-height: 44px; border: 0; outline: 0; background: transparent; color: var(--text); }
 .filters { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
@@ -547,8 +565,8 @@ input:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; }
   .footer-inner { width: min(calc(100% - 28px), var(--canvas)); }
   .brand-copy small { display: none; }
   .hero { padding: 52px 0 38px; }
-  .hero h1,
-  .page-hero h1 { font-size: 40px; }
+  .hero h1 { font-size: 40px; }
+  .page-hero h1 { font-size: 32px; }
   .hero-grid { gap: 40px; }
   .ecosystem-visual { padding: 22px; }
   .map-row { grid-template-columns: 1fr; }

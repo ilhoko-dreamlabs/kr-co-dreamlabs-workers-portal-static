@@ -7,7 +7,7 @@
 ├─ workers/                 searchable public-safe Worker directory
 ├─ workerops/               WorkerOps overview and subsystem map
 ├─ ecosystem/               Worker services and connected business systems
-├─ learn/                   Manual, UI/UX Assets and product introduction
+├─ learn/                   Manual, DreamLabs Asset Pack and product introduction
 ├─ about/                   static/public boundary and link-review policy
 ├─ status/                  Portal delivery facts only, not Worker health
 └─ 404.html                 recovery links to Workers, WorkerOps and Learn
@@ -53,7 +53,7 @@ directory search. It does not present an artificial global status indicator.
    - 업무 실행;
    - 회의/협업;
    - 사용법 찾기;
-   - UI 구현;
+   - 자산 찾기;
    - 제품/구조 이해;
    - 조직·역할 정보 확인.
 6. **Access notice**
@@ -126,7 +126,7 @@ Subsystem presentation rules:
 | Worker Gateway | explain authentication role; do not describe it as the Portal |
 | Worker Meet | application link with authentication expectation |
 | Worker Manual | guide hub plus selected deep links |
-| Worker Assets | UI/UX standards and patterns |
+| DreamLabs Assets | brand, Worker and product asset catalog with per-asset approval status |
 | HR System | separately owned business system; linked as a connected system, not a Worker control component |
 | Worker Registry / Update / Portainer | explanation-only unless a separately approved public UI exists |
 
@@ -141,7 +141,7 @@ This page answers `which system owns this job?` using a responsibility table.
 | authenticate to protected Worker routes | Worker Gateway sign-in | Portal authentication or authorization |
 | meet and collaborate | Worker Meet | automatic Worker-to-Worker orchestration |
 | learn a feature | Worker Manual | that every Worker has the feature deployed |
-| implement consistent UI | Worker Assets | runtime hotlinking or automatic adoption |
+| find brand/product assets | DreamLabs Assets | that candidate assets are approved or automatically adopted |
 | view organization and role information | HR System | Worker runtime authority or WorkerOps ownership |
 
 ## Learn page
@@ -152,8 +152,8 @@ The page contains three collections:
    cases.
 2. **Use** — Manual home, first session, projects, skills, collaboration,
    updates and troubleshooting.
-3. **Build** — Assets home, foundations, components, patterns, templates and
-   releases.
+3. **Assets** — Asset Pack home, DreamLabs brand, Worker Host, product logo and
+   footer asset collections, with candidate/approved state kept visible.
 
 Deep links are curated in the Portal registry. The Portal does not scrape the
 manual or assets site in the browser.
