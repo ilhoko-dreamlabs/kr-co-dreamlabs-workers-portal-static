@@ -9,8 +9,8 @@ snapshot만 게시한다.
 - repository: `ilhoko-dreamlabs/kr-co-dreamlabs-workers-portal-static`
 - publication: public-data reviewed; repository visibility is controlled in GitHub settings
 - default branch: `main`
-- hosting: GitHub Pages workflow prepared, not activated
-- custom domain: `workers.dreamlabs.co.kr` planned; DNS/TLS unchanged
+- hosting: GitHub Pages workflow deployed and externally verified at the default URL
+- custom domain: `workers.dreamlabs.co.kr` blocked by an existing service route; DNS/TLS unchanged
 - runtime authority: none
 
 Portal은 Worker Registry, Update Manager, Worker API 또는 인증된 Runtime을 직접
