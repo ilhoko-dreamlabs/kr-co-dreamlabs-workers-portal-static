@@ -31,8 +31,16 @@ test("candidate assets are not promoted to runtime applied", async () => {
   assert.ok(lock.assets.every((asset) => asset.path.startsWith("/brand/worker-host/")));
 });
 
-test("custom domain remains an explicit pending operation", async () => {
-  const [readme, operations] = await Promise.all([read("README.md"), read("docs/OPERATIONS.md")]);
-  assert.match(readme, /DNS\/TLS unchanged/u);
-  assert.match(operations, /separate read-only DNS\/GitOps inventory/u);
+test("accepted custom domain remains separate from the parent service", async () => {
+  const [readme, operations, architecture, schema] = await Promise.all([
+    read("README.md"),
+    read("docs/OPERATIONS.md"),
+    read("docs/ARCHITECTURE.md"),
+    read("schemas/status.schema.json").then(JSON.parse),
+  ]);
+  assert.match(readme, /https:\/\/portal\.workers\.dreamlabs\.co\.kr\//u);
+  assert.match(readme, /workers\.dreamlabs\.co\.kr.*separate authenticated service/u);
+  assert.match(operations, /certificate SAN matches `portal\.workers\.dreamlabs\.co\.kr`/u);
+  assert.match(architecture, /HTTPS enforced and externally accepted/u);
+  assert.equal(schema.$id, "https://portal.workers.dreamlabs.co.kr/schemas/status.schema.json");
 });

@@ -1,6 +1,6 @@
 # DreamLabs Workers Portal Static
 
-`workers.dreamlabs.co.kr`용 Worker Portal 정적 사이트다. 이 저장소는 Worker Host
+`portal.workers.dreamlabs.co.kr`용 Worker Portal 정적 사이트다. 이 저장소는 Worker Host
 Service Unit과 분리해 관리하며 HTML, CSS, JavaScript와 운영자가 검토한 JSON
 snapshot만 게시한다.
 
@@ -9,8 +9,9 @@ snapshot만 게시한다.
 - repository: `ilhoko-dreamlabs/kr-co-dreamlabs-workers-portal-static`
 - publication: public-data reviewed; repository visibility is controlled in GitHub settings
 - default branch: `main`
-- hosting: GitHub Pages workflow deployed and externally verified at the default URL
-- custom domain: `workers.dreamlabs.co.kr` blocked by an existing service route; DNS/TLS unchanged
+- hosting: GitHub Pages workflow deployed; the default github.io URL redirects to the custom domain
+- custom domain: `https://portal.workers.dreamlabs.co.kr/` deployed with HTTPS enforced and externally accepted
+- preserved service: `workers.dreamlabs.co.kr` remains a separate authenticated service and was not changed
 - runtime authority: none
 
 Portal은 Worker Registry, Update Manager, Worker API 또는 인증된 Runtime을 직접

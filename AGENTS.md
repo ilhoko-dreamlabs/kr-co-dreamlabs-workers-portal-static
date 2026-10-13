@@ -1,7 +1,7 @@
 # AGENTS.md
 
 This repository owns the separate static DreamLabs Worker Portal published for
-`workers.dreamlabs.co.kr`. It does not own Worker Host runtime, Worker Registry,
+`portal.workers.dreamlabs.co.kr`. It does not own Worker Host runtime, Worker Registry,
 Update Manager, DNS, TLS, public asset hosting or authenticated Worker APIs.
 
 ## Rules
