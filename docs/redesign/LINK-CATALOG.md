@@ -28,7 +28,7 @@ acceptance, authorization, Worker health or current image identity.
 | Worker Meet | `https://worker-meet.dreamlabs.co.kr/` | HTTPS 200; native application | Meeting/collaboration application |
 | Worker Gateway 로그인 | `https://workers.dreamlabs.co.kr/oauth2/sign_in` | HTTPS 200; sign-in page | Authentication boundary explanation, not Portal home |
 | Worker Manual | `https://manual.workers.dreamlabs.co.kr/` | HTTPS 200 | User/admin guide hub |
-| Worker UI/UX Assets | `https://assets.workers.dreamlabs.co.kr/` | HTTPS 200 | Standards, patterns and assets |
+| DreamLabs Assets | `https://assets.dreamlabs.co.kr/` | HTTPS 200; Asset Pack 0.1.2 candidate-inspection, mixed approval | Brand, Worker, product and footer assets |
 | DreamLabs HR System | `https://hr.dreamlabs.co.kr/` | HTTPS 200; application shell and route manifest reviewed | Connected organization/role system; access policy owner review required |
 
 The Gateway entry is secondary. Users normally select a Worker first and are
@@ -81,10 +81,12 @@ They can be added only with an explicit candidate badge and approved wording.
 
 ## Assets deep-link groups
 
-The first Portal release links to the Assets home and uses catalog categories
-for foundations, components, patterns, templates, labs and releases. A deep
-link is published only after its exact production URL returns the expected
-page. The Portal must not invent routes from the planning document.
+The Portal links to the Asset Pack home and its published DreamLabs Brand,
+Worker Host, Product Logos and Footer Assets collections. Asset Pack deployment
+does not itself mean runtime adoption or approval: the Portal must retain each
+asset's source approval state. At release time, the only approved runtime asset
+is the Worker Agent icon recorded in `config/asset-lock.json`; candidate assets
+remain design/review references.
 
 ## Publication rules
 

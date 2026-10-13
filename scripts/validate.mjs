@@ -16,7 +16,6 @@ const requiredFiles = [
   "status/index.html",
   "css/portal.css",
   "js/portal.js",
-  "assets/worker-mark.svg",
   "data/directory.json",
   "data/collections.json",
   "data/portal-status.json",
@@ -28,7 +27,7 @@ const allowedHosts = new Set([
   "workers.dreamlabs.co.kr",
   "worker-meet.dreamlabs.co.kr",
   "manual.workers.dreamlabs.co.kr",
-  "assets.workers.dreamlabs.co.kr",
+  "assets.dreamlabs.co.kr",
   "hr.dreamlabs.co.kr",
 ]);
 let checks = 0;
@@ -153,9 +152,16 @@ for (const file of files) {
 if (distIndex < 0) {
   const assetLock = JSON.parse(await readFile(path.join(root, "config", "asset-lock.json"), "utf8"));
   check(assetLock.schemaVersion === "2.0.0", "Unsupported asset lock schemaVersion");
-  check(assetLock.reference?.site === "https://assets.workers.dreamlabs.co.kr/", "Unexpected asset reference site");
-  check(assetLock.packaging?.mode === "local" && assetLock.packaging?.runtimeHotlink === false, "Portal assets must be packaged locally");
-  check(assetLock.assets?.some((asset) => asset.path === "/assets/worker-mark.svg"), "Worker mark must be locally packaged");
+  check(assetLock.reference?.site === "https://assets.dreamlabs.co.kr/", "Unexpected asset reference site");
+  check(assetLock.reference?.manifestVersion === "0.1.2", "Unexpected Asset Pack manifest version");
+  check(assetLock.reference?.catalogStatus === "candidate-inspection" && assetLock.reference?.approvalStatus === "mixed", "Asset Pack candidate and approval states must remain explicit");
+  check(assetLock.packaging?.mode === "hybrid" && assetLock.packaging?.runtimeHotlink === true, "Approved runtime asset must use the tracked Asset Pack origin");
+  check(assetLock.packaging?.allowedOrigin === "https://assets.dreamlabs.co.kr", "Unexpected runtime asset origin");
+  check(assetLock.assets?.some((asset) => asset.url === "https://assets.dreamlabs.co.kr/agents/dreamlabs-worker/icon/dreamlabs-bot-icon.png" && asset.sourceApprovalStatus === "approved" && asset.portalRuntimeApplied === true), "Approved Worker Agent icon must be tracked as runtime-applied");
+  for (const relative of pageFiles) {
+    const html = await read(relative);
+    check(html.includes("https://assets.dreamlabs.co.kr"), `${relative}: Asset Pack origin must be declared`);
+  }
 }
 
 console.log(`static validation passed: ${checks} checks, ${directory.items.length} directory items`);

@@ -206,18 +206,18 @@
       "actions": [{ "label": "매뉴얼 열기", "url": "https://manual.workers.dreamlabs.co.kr/" }]
     },
     {
-      "id": "worker-assets",
+      "id": "dreamlabs-assets",
       "kind": "standard",
-      "title": "Worker UI/UX Assets",
-      "summary": "Worker 화면의 UI 원칙, 패턴, 템플릿과 접근성 기준을 제공합니다.",
-      "url": "https://assets.workers.dreamlabs.co.kr/",
+      "title": "DreamLabs Assets",
+      "summary": "DreamLabs 브랜드, Worker 아이콘, 제품 로고와 푸터 자산의 승인 상태를 제공합니다.",
+      "url": "https://assets.dreamlabs.co.kr/",
       "audiences": ["designer", "developer", "qa"],
-      "tags": ["design-system", "ui", "ux"],
+      "tags": ["brand", "assets", "catalog"],
       "access": "public",
       "exposure": "public-listable",
       "availability": "https-observed",
       "linkReview": { "expected": "http-200", "observedAt": "2026-10-13T18:07:44+09:00" },
-      "actions": [{ "label": "Assets 열기", "url": "https://assets.workers.dreamlabs.co.kr/" }]
+      "actions": [{ "label": "Asset Pack 열기", "url": "https://assets.dreamlabs.co.kr/" }]
     },
     {
       "id": "hr-system",

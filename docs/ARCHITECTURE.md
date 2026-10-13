@@ -8,7 +8,7 @@ service responsibilities and links users to each service's own authentication bo
 | repository | `ilhoko-dreamlabs/kr-co-dreamlabs-workers-portal-static` | separate from Worker Host runtime source |
 | UI | plain HTML, CSS and JavaScript | no framework runtime or inline script |
 | data | versioned operator-reviewed JSON | no live Worker or account data |
-| assets | packaged locally | Worker Assets is a design reference, not a runtime dependency |
+| assets | tracked hybrid use | the approved Worker Agent icon is loaded from `assets.dreamlabs.co.kr`; candidate tokens are a documented design reference |
 | packaging | recursive static copy plus SHA-256 manifest | exact source revision recorded at build |
 | validation | static contract, security scan and Node tests | runs before artifact upload |
 | hosting | GitHub Pages custom workflow | source, artifact and deployment remain distinct |
@@ -36,8 +36,8 @@ There are no authenticated API calls, service tokens, WebSockets or control comm
 - Worker Gateway owns authentication at protected Worker addresses.
 - Worker Meet owns meeting and collaboration flows.
 - Worker Manual owns user and administrator guidance.
-- Worker UI/UX Assets owns the shared design guidance; Portal-owned assets are copied
-  and versioned locally.
+- DreamLabs Assets owns the public Asset Pack. The Portal uses only the catalog's
+  approved Worker Agent icon at runtime and does not present candidate assets as approved.
 - DreamLabs HR System is a connected business system, not WorkerOps infrastructure or
   Worker runtime.
 - Portal owns only public navigation, explanation and its own publication facts.

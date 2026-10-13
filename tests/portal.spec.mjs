@@ -41,17 +41,22 @@ test("HR remains a connected business system outside WorkerOps runtime", async (
   assert.match(workerops, /Worker runtime 또는 WorkerOps 제어 소유권/u);
 });
 
-test("portal packages assets locally while linking the public standard", async () => {
-  const [lock, css, mark] = await Promise.all([
+test("portal uses only the approved tracked Asset Pack runtime asset", async () => {
+  const [lock, css, index] = await Promise.all([
     read("config/asset-lock.json").then(JSON.parse),
     read("site/css/portal.css"),
-    read("site/assets/worker-mark.svg"),
+    read("site/index.html"),
   ]);
-  assert.equal(lock.reference.site, "https://assets.workers.dreamlabs.co.kr/");
-  assert.equal(lock.packaging.mode, "local");
-  assert.equal(lock.packaging.runtimeHotlink, false);
-  assert.match(css, /--accent:\s*#2f6e83/u);
-  assert.match(mark, /<svg/u);
+  assert.equal(lock.reference.site, "https://assets.dreamlabs.co.kr/");
+  assert.equal(lock.reference.manifestVersion, "0.1.2");
+  assert.equal(lock.reference.catalogStatus, "candidate-inspection");
+  assert.equal(lock.reference.approvalStatus, "mixed");
+  assert.equal(lock.packaging.mode, "hybrid");
+  assert.equal(lock.packaging.runtimeHotlink, true);
+  assert.ok(lock.assets.some((asset) => asset.sourceApprovalStatus === "approved" && asset.portalRuntimeApplied === true));
+  assert.match(css, /--accent:\s*#2457c5/u);
+  assert.match(index, /https:\/\/assets\.dreamlabs\.co\.kr\/agents\/dreamlabs-worker\/icon\/dreamlabs-bot-icon\.png/u);
+  assert.doesNotMatch(index, /assets\.workers\.dreamlabs\.co\.kr/u);
 });
 
 test("public routes and schema identifiers use the accepted custom domain", async () => {
