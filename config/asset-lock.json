@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "origin": "https://assets.dreamlabs.co.kr",
+  "manifestUrl": "https://assets.dreamlabs.co.kr/assets-manifest.json",
+  "qualification": {
+    "approvalStatus": "candidate",
+    "deploymentStatus": "catalog-listed",
+    "runtimeApplied": false,
+    "note": "Portal reference does not approve or apply Worker runtime branding."
+  },
+  "assets": [
+    {
+      "id": "worker-host-logo-white",
+      "path": "/brand/worker-host/logos/worker-host-logo-white.svg",
+      "version": "asset-pack-0.1-candidate",
+      "sha256": null,
+      "cachePolicy": "revalidate",
+      "fallback": "/assets/fallback.svg"
+    },
+    {
+      "id": "worker-host-favicon",
+      "path": "/brand/worker-host/favicon/favicon.ico",
+      "version": "asset-pack-0.1-candidate",
+      "sha256": null,
+      "cachePolicy": "revalidate",
+      "fallback": null
+    }
+  ]
+}

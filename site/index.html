@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="DreamLabs Worker Host의 작업, 릴리스, 운영 판단을 한곳에서 확인하는 Worker Portal" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://assets.dreamlabs.co.kr data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+    <title>DreamLabs Worker Portal</title>
+    <link rel="icon" href="https://assets.dreamlabs.co.kr/brand/worker-host/favicon/favicon.ico" />
+    <link rel="stylesheet" href="./css/portal.css" />
+    <script src="./js/portal.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#portal-content">포털 본문으로 건너뛰기</a>
+
+    <div class="portal-shell">
+      <aside class="portal-sidebar" id="portal-sidebar" aria-label="Worker Portal 탐색">
+        <a class="portal-brand" href="#overview" aria-label="DreamLabs Worker Portal 홈">
+          <img src="https://assets.dreamlabs.co.kr/brand/worker-host/logos/worker-host-logo-white.svg" data-fallback="./assets/fallback.svg" alt="DreamLabs Worker Host" />
+          <span>Worker Portal</span>
+        </a>
+
+        <div class="workspace-switcher">
+          <span class="workspace-symbol" aria-hidden="true">WH</span>
+          <div><small>Service Unit</small><strong>Worker Host</strong></div>
+          <span class="workspace-state">STATIC</span>
+        </div>
+
+        <nav class="portal-nav">
+          <p>Workspace</p>
+          <a class="is-active" href="#overview" data-nav-link><span aria-hidden="true">⌂</span>Overview</a>
+          <a href="#workstreams" data-nav-link><span aria-hidden="true">▦</span>Workstreams</a>
+          <a href="#releases" data-nav-link><span aria-hidden="true">◇</span>Releases</a>
+          <a href="#decisions" data-nav-link><span aria-hidden="true">?</span>Decisions</a>
+          <a href="#evidence" data-nav-link><span aria-hidden="true">≡</span>Evidence</a>
+        </nav>
+
+        <div class="sidebar-snapshot">
+          <div><span class="pulse" aria-hidden="true"></span><strong>정적 스냅샷</strong></div>
+          <time id="snapshot-date" datetime="2026-10-13">불러오는 중</time>
+          <small>실시간 Registry 아님</small>
+        </div>
+      </aside>
+
+      <div class="sidebar-backdrop" data-close-sidebar hidden></div>
+
+      <div class="portal-frame">
+        <header class="portal-topbar">
+          <div class="topbar-left">
+            <button class="nav-toggle" id="nav-toggle" type="button" aria-controls="portal-sidebar" aria-expanded="false" aria-label="포털 메뉴 열기">☰</button>
+            <div class="breadcrumb"><span>Worker Portal</span><b>/</b><strong>Overview</strong></div>
+          </div>
+          <div class="topbar-right">
+            <span class="topbar-state" id="snapshot-state"><i aria-hidden="true"></i>snapshot loading</span>
+            <code id="snapshot-revision">--------</code>
+            <span class="divider" aria-hidden="true"></span>
+            <a href="https://assets.dreamlabs.co.kr/brand/worker-host/" target="_blank" rel="noreferrer">Brand assets</a>
+          </div>
+        </header>
+
+        <main id="portal-content">
+          <section class="portal-overview" id="overview" aria-labelledby="portal-title">
+            <div class="page-heading">
+              <div>
+                <p class="eyebrow">OPERATIONS WORKSPACE</p>
+                <h1 id="portal-title">Worker Portal</h1>
+                <p>Worker Host의 개발, 릴리스와 운영 판단을 현재 근거에 맞춰 관리합니다.</p>
+              </div>
+              <div class="source-context">
+                <span>PUBLIC SNAPSHOT</span>
+                <strong>Snapshot <code id="snapshot-context-revision">--------</code></strong>
+                <small id="snapshot-context">운영자 검토 스냅샷을 불러오는 중입니다.</small>
+              </div>
+            </div>
+
+            <div class="overview-grid">
+              <article class="operations-card">
+                <div class="card-heading">
+                  <div><span class="section-kicker">PRODUCT SNAPSHOT</span><h2>Worker 제품 상태</h2></div>
+                  <span class="snapshot-badge" id="snapshot-badge">LOADING</span>
+                </div>
+                <div class="worker-status-list">
+                  <div class="worker-status-row">
+                    <span class="worker-avatar">WP</span>
+                    <div><strong>Portal Platform</strong><small>Static delivery foundation</small></div>
+                    <code>Static v0.1</code>
+                    <span class="portal-pill success">소스 준비</span>
+                  </div>
+                  <div class="worker-status-row">
+                    <span class="worker-avatar worker-avatar-cyan">UX</span>
+                    <div><strong>Worker Experience</strong><small>Console and workspace experience</small></div>
+                    <code>UX baseline</code>
+                    <span class="portal-pill partial">검증 진행</span>
+                  </div>
+                  <div class="worker-status-row">
+                    <span class="worker-avatar worker-avatar-muted">DT</span>
+                    <div><strong>Desktop Worker</strong><small>Cross-platform distribution</small></div>
+                    <code>Design review</code>
+                    <span class="portal-pill pending">기획·설계</span>
+                  </div>
+                </div>
+                <p class="operations-note"><strong>공개 경계:</strong> 이 화면은 공개 검토된 제품 snapshot입니다. 내부 Worker identity와 운영 세부정보는 표시하지 않으며 배포와 acceptance를 별도 상태로 관리합니다.</p>
+              </article>
+
+              <div class="metric-panel" aria-label="포털 요약 지표">
+                <article><span>추적 작업</span><strong id="metric-total">0</strong><small>현재 범위</small></article>
+                <article><span>진행 중</span><strong id="metric-active">0</strong><small>source 포함</small></article>
+                <article><span>판단 필요</span><strong id="metric-action">0</strong><small>사용자·운영 gate</small></article>
+                <article><span>차단됨</span><strong id="metric-blocked">0</strong><small>결정·근거 대기</small></article>
+              </div>
+            </div>
+          </section>
+
+          <section class="portal-workspace" id="workstreams" aria-labelledby="workstreams-title">
+            <div class="workspace-main">
+              <div class="section-heading">
+                <div><span class="section-kicker">WORKSTREAMS</span><h2 id="workstreams-title">작업 현황</h2></div>
+                <p id="result-count" aria-live="polite"></p>
+              </div>
+
+              <div class="toolbar" role="search">
+                <label class="search-field">
+                  <span class="visually-hidden">작업 검색</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.15a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z" /></svg>
+                  <input id="search-input" type="search" placeholder="작업, 상태, 다음 단계 검색" autocomplete="off" />
+                </label>
+                <div class="filters" aria-label="상태 필터">
+                  <button class="filter is-active" type="button" data-filter="all">전체</button>
+                  <button class="filter" type="button" data-filter="active">진행 중</button>
+                  <button class="filter" type="button" data-filter="action">판단 필요</button>
+                  <button class="filter" type="button" data-filter="deployed">적용됨</button>
+                  <button class="filter" type="button" data-filter="blocked">차단됨</button>
+                </div>
+              </div>
+
+              <div class="table-shell">
+                <table>
+                  <thead><tr><th scope="col">작업</th><th scope="col">기획</th><th scope="col">설계</th><th scope="col">개발</th><th scope="col">검증</th><th scope="col">릴리스</th><th scope="col">실행</th><th scope="col">다음 단계</th></tr></thead>
+                  <tbody id="workstream-body"></tbody>
+                </table>
+                <div class="empty-state" id="empty-state" hidden><strong id="empty-state-title">조건에 맞는 작업이 없습니다.</strong><span id="empty-state-message">검색어나 필터를 변경해 주세요.</span></div>
+              </div>
+            </div>
+
+            <aside class="operator-queue" aria-labelledby="queue-title">
+              <div class="queue-heading"><span class="section-kicker">OPERATOR QUEUE</span><h2 id="queue-title">다음 판단</h2></div>
+              <ol>
+                <li><span>01</span><div><strong>Portal 공개 배포</strong><p>검증된 정적 artifact를 GitHub Pages에 게시하고 외부 HTTPS를 확인합니다.</p></div></li>
+                <li><span>02</span><div><strong>사용자 도메인 연결</strong><p>기존 DNS를 보존한 승인된 전환과 TLS 검증을 수행합니다.</p></div></li>
+                <li><span>03</span><div><strong>Snapshot 운영 기준</strong><p>갱신 담당자, 공개 범위와 stale 기준을 지속적으로 검토합니다.</p></div></li>
+              </ol>
+              <div class="queue-boundary"><strong>운영 경계</strong><p>이 포털은 상태를 보여 줄 뿐 Update, 재시작, 배포 또는 승인을 실행하지 않습니다.</p></div>
+            </aside>
+          </section>
+
+          <section class="portal-section" id="releases" aria-labelledby="releases-title">
+            <div class="section-heading"><div><span class="section-kicker">RELEASE CONTROL</span><h2 id="releases-title">완료 판단 기준</h2></div><p>각 단계는 다음 단계의 증거를 대신하지 않습니다.</p></div>
+            <div class="release-flow">
+              <article class="release-step is-complete"><span>01</span><div><strong>Source</strong><small>구현·문서·정확한 커밋</small></div></article>
+              <article class="release-step is-complete"><span>02</span><div><strong>Validation</strong><small>focused·aggregate gate</small></div></article>
+              <article class="release-step is-current"><span>03</span><div><strong>Image & Supply</strong><small>불변 identity·사전 배치</small></div></article>
+              <article class="release-step"><span>04</span><div><strong>Named Worker</strong><small>실제 대상 적용</small></div></article>
+              <article class="release-step"><span>05</span><div><strong>Acceptance</strong><small>동작·보존·비대상 확인</small></div></article>
+            </div>
+          </section>
+
+          <section class="portal-section" id="decisions" aria-labelledby="decisions-title">
+            <div class="section-heading"><div><span class="section-kicker">OPEN DECISIONS</span><h2 id="decisions-title">진행 전 필요한 결정</h2></div><p>현재 운영과 다음 구현에 직접 영향을 주는 항목만 표시합니다.</p></div>
+            <div class="decision-cards">
+              <article><span>DATA</span><strong>공개 데이터 정책</strong><p>운영 증거는 공개 가능한 요약으로만 게시하고 내부 identity는 제외합니다.</p></article>
+              <article><span>FRESHNESS</span><strong>Snapshot 갱신 주기</strong><p>기준 시각과 stale 상태를 명확히 표시하고 실패를 정상으로 대체하지 않습니다.</p></article>
+              <article><span>DESKTOP</span><strong>Desktop 지원 Matrix</strong><p>플랫폼과 배포 범위는 검증된 설계 이후 단계적으로 공개합니다.</p></article>
+              <article><span>RELEASE</span><strong>완료 판단 기준</strong><p>소스, 검증, 배포와 사용자 acceptance를 각각 독립적으로 확인합니다.</p></article>
+            </div>
+          </section>
+
+          <section class="evidence-bar" id="evidence" aria-label="포털 근거와 제한">
+            <div><span>EVIDENCE BASIS</span><strong>공개 저장소 history · CI validation · 운영자 검토 snapshot</strong></div>
+            <p><span id="snapshot-evidence">운영자 검토 스냅샷을 불러오는 중입니다.</span> 브랜드는 <a href="https://assets.dreamlabs.co.kr/brand/worker-host/" target="_blank" rel="noreferrer">Worker Host Asset Pack 후보</a>를 참조합니다.</p>
+          </section>
+        </main>
+
+        <footer class="portal-footer"><span>DreamLabs Worker Portal</span><span>read-only projection · no runtime authority</span></footer>
+      </div>
+    </div>
+
+    <dialog id="detail-dialog" aria-labelledby="detail-title"><div class="dialog-shell"><button class="dialog-close" type="button" aria-label="상세 닫기">×</button><div id="detail-content"></div></div></dialog>
+  </body>
+</html>
