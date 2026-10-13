@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.0.0",
-  "observedAt": "2026-10-13T15:20:00+09:00",
-  "publishedAt": "2026-10-13T15:20:00+09:00",
+  "observedAt": "2026-10-13T15:37:00+09:00",
+  "publishedAt": "2026-10-13T15:37:00+09:00",
   "staleAfterHours": 168,
   "source": {
     "kind": "operator-reviewed-snapshot",
-    "snapshotId": "2026-10-13-public-v1",
+    "snapshotId": "2026-10-13-public-v2",
     "evidenceClass": "reviewed-private-source",
     "note": "공개 검토된 제품 진행 snapshot이며 실시간 Worker 상태나 운영 권한을 제공하지 않습니다."
   },
@@ -13,7 +13,7 @@
     {
       "id": "portal-publication",
       "priority": "P0",
-      "overall": "active",
+      "overall": "deployed",
       "needsAction": true,
       "title": "Worker Portal 공개 배포",
       "code": "STATIC SITE · RELEASE CANDIDATE",
@@ -21,13 +21,13 @@
       "planning": { "tone": "complete", "label": "범위 확정", "note": "read-only portal" },
       "design": { "tone": "complete", "label": "설계 완료", "note": "static architecture" },
       "development": { "tone": "complete", "label": "구현 완료", "note": "HTML · CSS · JS" },
-      "validation": { "tone": "pass", "label": "로컬 통과", "note": "CI 별도 확인" },
-      "release": { "tone": "pending", "label": "게시 대기", "note": "Pages workflow" },
-      "runtime": { "tone": "pending", "label": "외부 검증 전", "note": "HTTPS acceptance" },
-      "nextTitle": "GitHub Pages 배포",
-      "nextText": "검증된 동일 artifact를 게시하고 외부 URL과 release identity를 확인합니다.",
-      "evidence": ["public repository validation", "deterministic static artifact", "operator-reviewed data contract"],
-      "risks": ["배포 전 소스 상태를 운영 상태로 표현하지 않음", "공개 snapshot에 내부 identity를 포함하지 않음"]
+      "validation": { "tone": "pass", "label": "CI 통과", "note": "public main" },
+      "release": { "tone": "deployed", "label": "Pages 배포", "note": "default URL" },
+      "runtime": { "tone": "partial", "label": "기본 URL 확인", "note": "custom domain 별도" },
+      "nextTitle": "사용자 도메인 소유 경계 결정",
+      "nextText": "기존 운영 서비스를 보존하면서 Portal 도메인을 분리하거나 소유 경계를 별도 승인합니다.",
+      "evidence": ["public repository validation", "deterministic GitHub Pages artifact", "external default-URL acceptance"],
+      "risks": ["기존 루트 도메인은 다른 운영 서비스가 사용 중", "custom domain 전환 전에는 github.io URL만 배포됨"]
     },
     {
       "id": "portal-custom-domain",
@@ -36,17 +36,17 @@
       "needsAction": true,
       "title": "Portal 사용자 도메인",
       "code": "DOMAIN · DEPLOYMENT GATE",
-      "summary": "GitHub Pages 기본 URL 검증 후 승인된 DNS와 TLS 전환으로 Worker Portal 도메인을 연결합니다.",
+      "summary": "GitHub Pages 기본 URL은 검증됐지만 목표 루트 도메인이 다른 운영 서비스에 사용 중이어서 전환이 중단됐습니다.",
       "planning": { "tone": "complete", "label": "절차 정의", "note": "rollback 포함" },
       "design": { "tone": "complete", "label": "경계 확정", "note": "Pages + DNS + TLS" },
-      "development": { "tone": "pending", "label": "설정 전", "note": "DNS 변경 없음" },
-      "validation": { "tone": "pending", "label": "사전조사", "note": "기존 값 보존" },
-      "release": { "tone": "blocked", "label": "순서 대기", "note": "Pages 먼저" },
-      "runtime": { "tone": "pending", "label": "미연결", "note": "외부 acceptance 전" },
-      "nextTitle": "Pages 검증 후 도메인 전환",
-      "nextText": "기존 레코드와 복구값을 보존하고 DNS, 인증서, HTTPS를 순서대로 확인합니다.",
-      "evidence": ["documented domain transition plan", "custom-domain rollback contract"],
-      "risks": ["DNS 변경과 Pages 설정이 불일치하면 접근 실패 가능", "TLS 발급 완료 전 HTTPS 강제를 활성화하지 않음"]
+      "development": { "tone": "blocked", "label": "변경 중단", "note": "DNS 보존" },
+      "validation": { "tone": "pass", "label": "소유 확인", "note": "existing service" },
+      "release": { "tone": "blocked", "label": "충돌", "note": "route ownership" },
+      "runtime": { "tone": "current", "label": "기존 서비스", "note": "변경 없음" },
+      "nextTitle": "별도 Portal 호스트 결정",
+      "nextText": "기존 서비스를 변경하지 않는 별도 서브도메인을 정하거나 소유 서비스의 마이그레이션을 별도 승인합니다.",
+      "evidence": ["authoritative DNS readback", "GitOps route ownership", "existing-use dependency review"],
+      "risks": ["현재 루트를 CNAME으로 바꾸면 기존 서비스가 손상될 수 있음", "기존 서비스 변경은 이번 Portal 범위 밖"]
     },
     {
       "id": "worker-console-experience",
