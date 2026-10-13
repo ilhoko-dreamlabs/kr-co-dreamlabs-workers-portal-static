@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 72" role="img" aria-labelledby="title">
-  <title id="title">DreamLabs Worker Portal</title>
-  <rect width="320" height="72" rx="12" fill="#08111f"/>
-  <circle cx="36" cy="36" r="18" fill="#0d9488"/>
-  <path d="M27 36h18M36 27v18" stroke="#a3e635" stroke-width="4" stroke-linecap="round"/>
-  <text x="66" y="43" fill="#fff" font-family="system-ui,sans-serif" font-size="22" font-weight="700">Worker Portal</text>
-</svg>

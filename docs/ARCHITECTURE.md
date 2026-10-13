@@ -1,41 +1,46 @@
 # Static Portal architecture
 
-This design follows the approved Worker system-configuration guidance and read-only
-inspection of existing DreamLabs GitHub Pages repositories.
+The Portal is a static, credential-free navigation layer. It explains public-safe
+service responsibilities and links users to each service's own authentication boundary.
 
-| Area | Decision | Current state |
+| Area | Decision | Boundary |
 |---|---|---|
-| repository | `ilhoko-dreamlabs/kr-co-dreamlabs-workers-portal-static` | public-data reviewed; visibility separately verified |
-| local checkout | `C:\dreamlabs\github\kr-co-dreamlabs-workers-portal-static` | working source |
-| UI | plain HTML, CSS and JavaScript | implemented |
-| data | versioned operator-reviewed JSON snapshot | implemented |
-| packaging | allowlisted copy from `site/` plus SHA-256 manifest | implemented |
-| validation | static contract, security, data and Node tests | implemented locally |
-| hosting | GitHub Pages custom workflow | deployed; default URL redirects to the custom domain |
-| public domain | `portal.workers.dreamlabs.co.kr` | HTTPS enforced and externally accepted |
-| preserved route | `workers.dreamlabs.co.kr` | separate authenticated service; unchanged |
-| runtime control | none | enforced by design |
+| repository | `ilhoko-dreamlabs/kr-co-dreamlabs-workers-portal-static` | separate from Worker Host runtime source |
+| UI | plain HTML, CSS and JavaScript | no framework runtime or inline script |
+| data | versioned operator-reviewed JSON | no live Worker or account data |
+| assets | packaged locally | Worker Assets is a design reference, not a runtime dependency |
+| packaging | recursive static copy plus SHA-256 manifest | exact source revision recorded at build |
+| validation | static contract, security scan and Node tests | runs before artifact upload |
+| hosting | GitHub Pages custom workflow | source, artifact and deployment remain distinct |
+| public domain | `portal.workers.dreamlabs.co.kr` | parent and sibling services remain independent |
+| runtime control | none | enforced in data contract and browser-code checks |
 
-## Flow
+## Publication flow
 
 ```text
-reviewed public evidence
-  -> site/data/status.json
+operator-reviewed public links
+  -> site/data/directory.json
   -> source validation and tests
-  -> deterministic dist artifact + hashes
-  -> manually approved GitHub Pages workflow
-  -> custom-domain DNS and TLS verification
-  -> external HTTPS acceptance
+  -> deterministic dist artifact + build manifest
+  -> manually dispatched GitHub Pages workflow
+  -> custom-domain and external HTTPS acceptance
 ```
 
-The browser may read only same-origin static files and approved public image assets.
-Future authenticated or live data belongs behind a separately designed service with
-user authentication, per-field authorization and audit. Worker service keys must never
-be exposed to this repository or browser.
+The browser fetches only `portal-status.json` and the artifact's `build-manifest.json`
+from the same origin. Search and filters run on HTML already packaged with the site.
+There are no authenticated API calls, service tokens, WebSockets or control commands.
 
-## Pending decisions
+## Responsibility boundaries
 
-- company owner and backup maintainer;
-- branch protection and Pages environment reviewer support for the GitHub plan;
-- snapshot owner, refresh cadence and stale threshold;
-- asset hash/version qualification for immutable caching.
+- Role Workers own task execution within their own authenticated context.
+- Worker Gateway owns authentication at protected Worker addresses.
+- Worker Meet owns meeting and collaboration flows.
+- Worker Manual owns user and administrator guidance.
+- Worker UI/UX Assets owns the shared design guidance; Portal-owned assets are copied
+  and versioned locally.
+- DreamLabs HR System is a connected business system, not WorkerOps infrastructure or
+  Worker runtime.
+- Portal owns only public navigation, explanation and its own publication facts.
+
+Operator-only Workers, internal management endpoints and raw operational evidence are
+intentionally absent from the public directory.

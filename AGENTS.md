@@ -7,8 +7,9 @@ Update Manager, DNS, TLS, public asset hosting or authenticated Worker APIs.
 ## Rules
 
 - Keep the deployable site under `site/` and browser code credential-free.
-- Treat `site/data/status.json` as a reviewed public snapshot, never a live control
-  plane or automatic projection of private repositories.
+- Treat `site/data/directory.json` and `site/data/portal-status.json` as reviewed
+  public static data, never a live control plane or automatic projection of private
+  repositories.
 - Keep planning, design, development, validation, release, named runtime and
   acceptance states separate.
 - Do not claim deployment from a local build, commit, push or Actions artifact.

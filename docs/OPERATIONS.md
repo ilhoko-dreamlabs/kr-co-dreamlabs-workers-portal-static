@@ -2,37 +2,42 @@
 
 ## Release flow
 
-1. Update `site/data/status.json` from reviewed evidence.
-2. Run `npm run check`, `npm run build`, and `npm run check:dist`.
-3. Review the source diff and public-data boundary.
-4. Commit and push to `main` only within the approved repository scope.
-5. Manually dispatch `Deploy GitHub Pages` after Pages and environment approval.
-6. Record run ID, source SHA and `dist/build-manifest.json` hashes.
-7. Verify the exact deployed commit at both the default and custom-domain routes.
+1. Review public destinations and update the static directory if needed.
+2. Run `npm run check`, `npm run build`, `npm run check:dist`, and `git diff --check`.
+3. Visually inspect desktop and narrow layouts, keyboard navigation, filters and 200%
+   zoom.
+4. Review the exact source diff and public-data boundary.
+5. Merge through protected `main` after required validation.
+6. Manually dispatch `Deploy GitHub Pages` at the exact `main` revision.
+7. Record workflow run, source SHA and `dist/build-manifest.json` readback.
+8. Verify the custom-domain routes, assets, 404, HTTP redirect, DNS and certificate.
+
+Source, validation, release artifact, Pages deployment and external acceptance must be
+reported separately. Do not use a successful earlier stage as evidence for a later one.
 
 ## Custom domain gate
 
-The accepted Portal hostname is `portal.workers.dreamlabs.co.kr`. Its DNS owner is an
-exact CNAME to `ilhoko-dreamlabs.github.io`; the parent `workers.dreamlabs.co.kr`
-service and other subdomains remain outside this repository's ownership. Pages
-custom-domain configuration, DNS, certificate issuance, Enforce HTTPS and external
-acceptance remain distinct checks for every future transition.
+The accepted hostname is `portal.workers.dreamlabs.co.kr`. Its DNS CNAME must continue
+to identify the confirmed GitHub Pages owner host. `workers.dreamlabs.co.kr`, wildcard
+records and sibling subdomains are outside this repository's ownership.
 
-The current accepted state requires all of the following readbacks:
+The accepted state requires all of the following readbacks:
 
-- GitHub Pages reports the certificate as approved and HTTPS enforcement enabled;
+- GitHub Pages reports HTTPS enforcement enabled;
 - HTTP redirects to the canonical HTTPS URL;
 - the certificate SAN matches `portal.workers.dreamlabs.co.kr` and its chain validates;
-- the public DNS CNAME resolves to the confirmed owner Pages host;
-- the deployed build manifest identifies the exact source commit.
+- public DNS resolves through the expected Pages owner;
+- the deployed build manifest identifies the exact source commit;
+- every Portal route, local asset and JSON document is available over HTTPS.
 
-Actions-based Pages publishing does not use a repository `CNAME` file. Do not commit
+Actions-based Pages publishing does not use a repository `CNAME` file. Never commit
 private keys or certificate material.
 
 ## Rollback
 
-Prefer redeploying a previously reviewed source revision after running the current
-validation and packaging gates. Verify its build manifest before deployment. DNS
-rollback is separate and requires the protected GitOps job, the recorded prior
-ownership state and explicit approval. Do not alter the parent service, wildcard or
-unrelated subdomains as part of a Portal rollback.
+The last accepted v1 source is tagged `portal-v1-accepted-20261013`. Prefer creating a
+reviewed rollback change from that immutable reference, running the current validation
+and packaging gates, and deploying the resulting exact artifact. DNS rollback is a
+separate protected operation and is unnecessary when the custom domain and Pages owner
+do not change. Never modify the parent service, wildcard or unrelated subdomains as part
+of Portal rollback.
