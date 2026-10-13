@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://workers.dreamlabs.co.kr/schemas/status.schema.json",
+  "$id": "https://portal.workers.dreamlabs.co.kr/schemas/status.schema.json",
   "title": "DreamLabs Worker Portal status snapshot",
   "type": "object",
   "additionalProperties": false,
