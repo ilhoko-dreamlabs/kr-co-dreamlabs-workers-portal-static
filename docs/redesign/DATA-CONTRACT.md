@@ -45,7 +45,7 @@ fields in JavaScript.
 
 | Field | Values |
 |---|---|
-| `kind` | `worker`, `product`, `service`, `guide`, `standard`, `explanation` |
+| `kind` | `worker`, `product`, `service`, `business-system`, `guide`, `standard`, `explanation` |
 | `access` | `public`, `login-required`, `access-controlled`, `restricted` |
 | `exposure` | `public-listable`, `authenticated-directory-only`, `not-published` |
 | `availability` | `https-observed`, `manifest-backed`, `candidate-only`, `unavailable` |

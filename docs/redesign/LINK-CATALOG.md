@@ -29,9 +29,15 @@ acceptance, authorization, Worker health or current image identity.
 | Worker Gateway 로그인 | `https://workers.dreamlabs.co.kr/oauth2/sign_in` | HTTPS 200; sign-in page | Authentication boundary explanation, not Portal home |
 | Worker Manual | `https://manual.workers.dreamlabs.co.kr/` | HTTPS 200 | User/admin guide hub |
 | Worker UI/UX Assets | `https://assets.workers.dreamlabs.co.kr/` | HTTPS 200 | Standards, patterns and assets |
+| DreamLabs HR System | `https://hr.dreamlabs.co.kr/` | HTTPS 200; application shell and route manifest reviewed | Connected organization/role system; access policy owner review required |
 
 The Gateway entry is secondary. Users normally select a Worker first and are
 then sent through the correct authentication boundary.
+
+HR System is also secondary and appears in a `Connected systems` collection.
+Its route and service are owned outside this Portal repository. The Portal must
+not describe HR as a Worker runtime, Gateway component or WorkerOps control
+plane, and a 200 shell response does not settle its authorization policy.
 
 ## Named Worker destinations
 

@@ -6,7 +6,7 @@
 /
 ├─ workers/                 searchable public-safe Worker directory
 ├─ workerops/               WorkerOps overview and subsystem map
-├─ ecosystem/               Worker Host, Gateway, Meet and support services
+├─ ecosystem/               Worker services and connected business systems
 ├─ learn/                   Manual, UI/UX Assets and product introduction
 ├─ about/                   static/public boundary and link-review policy
 ├─ status/                  Portal delivery facts only, not Worker health
@@ -47,13 +47,15 @@ directory search. It does not present an artificial global status indicator.
 4. **WorkerOps ecosystem**
    - a small relationship map;
    - cards for Worker Host, Gateway, Meet, Manual and Assets;
+   - a separate connected-systems row for HR System;
    - subsystem entries without a public UI are labelled `설명` or `준비 중`.
 5. **Start by intent**
    - 업무 실행;
    - 회의/협업;
    - 사용법 찾기;
    - UI 구현;
-   - 제품/구조 이해.
+   - 제품/구조 이해;
+   - 조직·역할 정보 확인.
 6. **Access notice**
    - Portal is public/static;
    - linked applications may require DreamLabs authentication;
@@ -110,6 +112,9 @@ execution     boundary            collaboration
    +------+------+-------------------+
           |
    Manual · Assets · evidence
+          |
+   Connected business systems
+          └─ HR System
 ```
 
 Subsystem presentation rules:
@@ -122,6 +127,7 @@ Subsystem presentation rules:
 | Worker Meet | application link with authentication expectation |
 | Worker Manual | guide hub plus selected deep links |
 | Worker Assets | UI/UX standards and patterns |
+| HR System | separately owned business system; linked as a connected system, not a Worker control component |
 | Worker Registry / Update / Portainer | explanation-only unless a separately approved public UI exists |
 
 ## Ecosystem page
@@ -136,6 +142,7 @@ This page answers `which system owns this job?` using a responsibility table.
 | meet and collaborate | Worker Meet | automatic Worker-to-Worker orchestration |
 | learn a feature | Worker Manual | that every Worker has the feature deployed |
 | implement consistent UI | Worker Assets | runtime hotlinking or automatic adoption |
+| view organization and role information | HR System | Worker runtime authority or WorkerOps ownership |
 
 ## Learn page
 

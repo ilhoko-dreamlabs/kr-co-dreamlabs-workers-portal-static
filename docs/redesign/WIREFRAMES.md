@@ -24,6 +24,7 @@
 │ WorkerOps ecosystem                                                        │
 │ [Worker Host] ─ [Gateway] ─ [Worker Meet]         [왜 WorkerOps인가]       │
 │       └──────── Manual · Assets ─────────┘          [운영 장면 보기]        │
+│ Connected systems: [HR System · 조직/역할 정보]                             │
 ├────────────────────────────────────────────────────────────────────────────┤
 │ 무엇을 하려 하나요?                                                        │
 │ 업무 실행 | 회의/협업 | 사용법 | UI 구현 | 제품/구조 이해                  │
@@ -85,6 +86,7 @@
 │ 2. Worker Gateway            │
 │ 3. Worker Meet               │
 │ 4. Manual / Assets           │
+│ Connected: HR System         │
 ├──────────────────────────────┤
 │ 공개 정적 Portal · 접근 안내 │
 └──────────────────────────────┘

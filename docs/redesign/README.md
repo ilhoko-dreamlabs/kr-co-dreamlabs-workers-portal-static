@@ -70,6 +70,8 @@ The home page presents four routes:
 - **Meet and collaborate** — Worker Meet and approved collaboration guidance.
 - **Learn and build** — Worker Host introduction, Worker Manual and Worker
   Assets.
+- **Connected business systems** — HR System and other separately owned systems
+  that provide an approved public entry point for Worker-related work.
 
 The detailed structure is in
 [INFORMATION-ARCHITECTURE.md](INFORMATION-ARCHITECTURE.md). Link publication
@@ -85,7 +87,9 @@ contract is in [DATA-CONTRACT.md](DATA-CONTRACT.md).
   Workers;
 - treating an HTTP response, source commit or image as product acceptance;
 - changing `workers.dreamlabs.co.kr`, wildcard DNS, OAuth, Worker runtimes or
-  Worker Meet.
+  Worker Meet;
+- presenting HR System or another business application as a Worker runtime or
+  a WorkerOps control subsystem.
 
 ## Recommended visual direction
 

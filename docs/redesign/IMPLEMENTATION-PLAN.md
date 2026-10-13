@@ -54,7 +54,7 @@ history preserves the original files.
 ### WP1 — catalog and governance
 
 - add v2 schemas and allowlisted host policy;
-- encode approved ecosystem links and Worker cards;
+- encode approved ecosystem links, connected HR System and Worker cards;
 - distinguish access, exposure and availability;
 - add public-data and credential-pattern validation;
 - add expected-response classes for link checks.
