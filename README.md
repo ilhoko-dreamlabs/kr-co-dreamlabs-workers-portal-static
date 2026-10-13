@@ -1,32 +1,44 @@
 # DreamLabs Workers Portal Static
 
-`portal.workers.dreamlabs.co.kr`용 Worker Portal 정적 사이트다. 이 저장소는 Worker Host
-Service Unit과 분리해 관리하며 HTML, CSS, JavaScript와 운영자가 검토한 JSON
-snapshot만 게시한다.
+`https://portal.workers.dreamlabs.co.kr/`에 게시되는 DreamLabs Worker 생태계의 공개
+정적 안내 허브다. 역할별 Worker, WorkerOps, Worker Host, Worker Gateway, Worker Meet,
+Worker Manual, Worker UI/UX Assets와 연결 업무 시스템을 설명하고 올바른 대표 주소로
+이동시킨다.
 
 ## Current state
 
 - repository: `ilhoko-dreamlabs/kr-co-dreamlabs-workers-portal-static`
-- publication: public-data reviewed; repository visibility is controlled in GitHub settings
 - default branch: `main`
-- hosting: GitHub Pages workflow deployed; the default github.io URL redirects to the custom domain
-- custom domain: `https://portal.workers.dreamlabs.co.kr/` deployed with HTTPS enforced and externally accepted
-- preserved service: `workers.dreamlabs.co.kr` remains a separate authenticated service and was not changed
+- hosting: GitHub Pages Actions workflow
+- custom domain: `https://portal.workers.dreamlabs.co.kr/`
+- preserved service: `workers.dreamlabs.co.kr`는 별도 인증 서비스이며 이 Portal이 소유하지 않는다
 - runtime authority: none
 
-Portal은 Worker Registry, Update Manager, Worker API 또는 인증된 Runtime을 직접
-조회하지 않는다. 화면의 상태는 `site/data/status.json`의 운영자 검토 snapshot이며
-관측 시각과 stale 기준을 명시한다.
+Portal은 Worker Registry, Worker API, 작업 큐, 세션, 배포 상태 또는 인증 정보를 직접
+조회하지 않는다. `site/data/directory.json`은 공개 가능한 링크와 접근 유형만 담은
+운영자 검토 디렉터리이며 실시간 health 데이터가 아니다.
 
-## Layout
+## Information architecture
+
+```text
+Portal
+├─ Workers       역할별 Worker 디렉터리
+├─ WorkerOps     운영 관점과 하위 시스템 책임
+├─ Ecosystem     Host, Gateway, Meet, Manual, Assets, HR 연결
+├─ Learn         사용자 안내와 UI/UX 표준
+├─ About         Portal 공개·보안 경계
+└─ Portal status 정적 artifact와 링크 검토 정보
+```
+
+## Repository layout
 
 ```text
 site/                 deployable static files only
-schemas/              public snapshot contract
-config/asset-lock.json referenced asset paths and qualification
+schemas/              public directory contracts
+config/asset-lock.json UI/UX reference and local asset packaging policy
 scripts/              validation, deterministic packaging, local server
 tests/                static contract tests
-docs/                 data and operating boundaries
+docs/                 data, architecture and operating boundaries
 .github/workflows/    validation and manually gated Pages deployment
 ```
 
@@ -40,15 +52,15 @@ npm run check:dist
 npm run serve
 ```
 
-Open `http://127.0.0.1:4178/`. Opening `site/index.html` directly is unsupported
-because the page loads its snapshot through HTTP.
+Open `http://127.0.0.1:4178/`. Direct `file:` opening is unsupported because the
+status page reads same-origin static JSON and the packaged build manifest through HTTP.
 
-## Publishing boundary
+## Publication boundary
 
-The Pages workflow is manual. Repository visibility, Pages activation, the
-`github-pages` environment, custom-domain configuration, DNS and HTTPS enforcement
-remain independently verifiable states. A source push is not evidence that any of
-those actions completed.
+Source validation, source commit, CI artifact, Pages deployment, custom-domain serving
+and external acceptance are separate states. A commit or successful build alone is not
+deployment evidence. See [DATA-CONTRACT.md](docs/DATA-CONTRACT.md),
+[ARCHITECTURE.md](docs/ARCHITECTURE.md), and [OPERATIONS.md](docs/OPERATIONS.md).
 
-See [DATA-CONTRACT.md](docs/DATA-CONTRACT.md) and
-[OPERATIONS.md](docs/OPERATIONS.md).
+The accepted v1 source is preserved by tag `portal-v1-accepted-20261013`. The v2 design
+record remains under [`docs/redesign/`](docs/redesign/README.md).

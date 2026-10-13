@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "2.0.0",
+  "catalogReviewedAt": "2026-10-13T18:07:44+09:00",
+  "mode": "public-static-directory",
+  "runtimeAuthority": false,
+  "liveWorkerData": false,
+  "note": "Portal은 검토된 링크를 제공하며 Worker 상태, 작업, 배포 또는 권한을 조회하거나 변경하지 않습니다."
+}

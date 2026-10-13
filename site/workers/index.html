@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="역할과 업무에 맞는 DreamLabs Worker를 찾는 공개 디렉터리" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+    <title>Workers · DreamLabs Workers Portal</title>
+    <link rel="icon" href="/assets/worker-mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/portal.css" />
+    <script src="/js/portal.js" defer></script>
+  </head>
+  <body data-page="workers">
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <header class="site-header"><div class="header-inner">
+      <a class="brand" href="/" aria-label="DreamLabs Workers Portal 홈"><img src="/assets/worker-mark.svg" alt="" /><span class="brand-copy"><strong>DREAMLABS WORKERS</strong><small>PORTAL</small></span></a>
+      <button class="menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="site-navigation" data-menu-toggle><span></span></button>
+      <nav class="site-nav" id="site-navigation" aria-label="주요 메뉴" data-site-nav><a href="/" data-nav-key="portal">Portal</a><a href="/workers/" data-nav-key="workers">Workers</a><a href="/workerops/" data-nav-key="workerops">WorkerOps</a><a href="/ecosystem/" data-nav-key="ecosystem">Ecosystem</a><a href="/learn/" data-nav-key="learn">Learn</a></nav>
+      <a class="header-action" href="#directory">Worker 찾기 <span aria-hidden="true">↓</span></a>
+    </div></header>
+
+    <main id="main-content">
+      <section class="page-hero" aria-labelledby="page-title">
+        <p class="eyebrow">WORKER DIRECTORY</p>
+        <h1 id="page-title">역할과 업무로<br />Worker를 찾습니다</h1>
+        <p class="page-lead">이름보다 목적을 먼저 보세요. 각 카드에서 담당 영역과 접근 방식을 확인한 다음 Worker로 이동할 수 있습니다.</p>
+        <div class="page-meta"><span>8 public-safe entries</span><span>Static directory</span><span>No live health</span></div>
+      </section>
+
+      <section class="section" id="directory" aria-labelledby="directory-title">
+        <div class="section-head"><div><p class="eyebrow">FIND A WORKER</p><h2 id="directory-title">Worker 디렉터리</h2></div><p>검색과 필터는 브라우저에서만 동작하며 입력 내용은 전송하거나 저장하지 않습니다.</p></div>
+        <div class="directory-toolbar" role="search">
+          <label class="search-field"><span aria-hidden="true">⌕</span><span class="visually-hidden">Worker 검색</span><input type="search" placeholder="이름, 역할 또는 업무 검색" autocomplete="off" data-directory-search /></label>
+          <div class="filters" aria-label="Worker 역할 필터">
+            <button class="filter is-active" type="button" data-directory-filter="all">전체</button>
+            <button class="filter" type="button" data-directory-filter="general">General</button>
+            <button class="filter" type="button" data-directory-filter="development">Development</button>
+            <button class="filter" type="button" data-directory-filter="sales">Sales</button>
+            <button class="filter" type="button" data-directory-filter="support">Support</button>
+          </div>
+        </div>
+        <p class="directory-result" aria-live="polite" data-directory-result>8 / 8개 Worker</p>
+
+        <div class="worker-grid">
+          <article class="worker-card" data-directory-card data-tags="general dreamlabs" data-search="Worker 0 DreamLabs 공통 업무 general team 로그인">
+            <div class="worker-card-head"><span class="worker-mark">W0</span><span class="badge login">DreamLabs 로그인</span></div>
+            <h3>Worker 0</h3><p>DreamLabs 공통 업무를 위한 Worker 진입점입니다.</p>
+            <div class="worker-card-meta"><span class="badge">General</span><span class="badge">DreamLabs</span></div>
+            <div class="worker-card-actions"><a class="button button-primary" href="https://worker0.workers.dreamlabs.co.kr/" target="_blank" rel="noreferrer">Worker 열기 ↗</a><a class="button button-quiet" href="https://manual.workers.dreamlabs.co.kr/guide/new-session/" target="_blank" rel="noreferrer">시작 가이드</a></div>
+            <span class="worker-note">보호된 응답 확인 · 실시간 상태 아님</span>
+          </article>
+
+          <article class="worker-card" data-directory-card data-tags="general dreamlabs" data-search="Worker 1 DreamLabs 공통 업무 general team 로그인">
+            <div class="worker-card-head"><span class="worker-mark">W1</span><span class="badge login">DreamLabs 로그인</span></div>
+            <h3>Worker 1</h3><p>DreamLabs 공통 업무를 위한 Worker 진입점입니다.</p>
+            <div class="worker-card-meta"><span class="badge">General</span><span class="badge">DreamLabs</span></div>
+            <div class="worker-card-actions"><a class="button button-primary" href="https://worker1.workers.dreamlabs.co.kr/" target="_blank" rel="noreferrer">Worker 열기 ↗</a><a class="button button-quiet" href="https://manual.workers.dreamlabs.co.kr/guide/new-session/" target="_blank" rel="noreferrer">시작 가이드</a></div>
+            <span class="worker-note">보호된 응답 확인 · 실시간 상태 아님</span>
+          </article>
+
+          <article class="worker-card" data-directory-card data-tags="general development" data-search="Claude Worker 개발 general development 로그인">
+            <div class="worker-card-head"><span class="worker-mark">CL</span><span class="badge login">DreamLabs 로그인</span></div>
+            <h3>Claude Worker</h3><p>Claude 실행 환경을 사용하는 Worker 진입점입니다.</p>
+            <div class="worker-card-meta"><span class="badge">General</span><span class="badge">Development</span></div>
+            <div class="worker-card-actions"><a class="button button-primary" href="https://claude-worker.workers.dreamlabs.co.kr/" target="_blank" rel="noreferrer">Worker 열기 ↗</a><a class="button button-quiet" href="https://manual.workers.dreamlabs.co.kr/guide/execution-options/" target="_blank" rel="noreferrer">실행 옵션</a></div>
+            <span class="worker-note">보호된 응답 확인 · 실시간 상태 아님</span>
+          </article>
+
+          <article class="worker-card" data-directory-card data-tags="sales dreamlabs" data-search="DL Sales Worker DreamLabs 영업 sales 접근 권한">
+            <div class="worker-card-head"><span class="worker-mark">SA</span><span class="badge controlled">접근 권한 필요</span></div>
+            <h3>DL Sales Worker</h3><p>DreamLabs 영업 업무를 지원하는 Worker 진입점입니다.</p>
+            <div class="worker-card-meta"><span class="badge">Sales</span><span class="badge">DreamLabs</span></div>
+            <div class="worker-card-actions"><a class="button button-primary" href="https://dl-sales-worker.workers.dreamlabs.co.kr/" target="_blank" rel="noreferrer">Worker 열기 ↗</a><a class="button button-quiet" href="https://manual.workers.dreamlabs.co.kr/guide/console-navigation/" target="_blank" rel="noreferrer">사용 가이드</a></div>
+            <span class="worker-note">Application shell 확인 · 권한은 대상 서비스가 판단</span>
+          </article>
+
+          <article class="worker-card" data-directory-card data-tags="development dreamlabs" data-search="DL Dev Worker DreamLabs 개발 development 접근 권한">
+            <div class="worker-card-head"><span class="worker-mark">DL</span><span class="badge controlled">접근 권한 필요</span></div>
+            <h3>DL Dev Worker</h3><p>DreamLabs 개발 업무를 지원하는 Worker 진입점입니다.</p>
+            <div class="worker-card-meta"><span class="badge">Development</span><span class="badge">DreamLabs</span></div>
+            <div class="worker-card-actions"><a class="button button-primary" href="https://dl-dev-worker.workers.dreamlabs.co.kr/" target="_blank" rel="noreferrer">Worker 열기 ↗</a><a class="button button-quiet" href="https://manual.workers.dreamlabs.co.kr/guide/projects/" target="_blank" rel="noreferrer">Project 가이드</a></div>
+            <span class="worker-note">Application shell 확인 · 권한은 대상 서비스가 판단</span>
+          </article>
+
+          <article class="worker-card" data-directory-card data-tags="development wcamper" data-search="WC Dev Worker WCamper 개발 development 접근 권한">
+            <div class="worker-card-head"><span class="worker-mark">WC</span><span class="badge controlled">접근 권한 필요</span></div>
+            <h3>WC Dev Worker</h3><p>WCamper 개발 업무를 지원하는 Worker 진입점입니다.</p>
+            <div class="worker-card-meta"><span class="badge">Development</span><span class="badge">WCamper</span></div>
+            <div class="worker-card-actions"><a class="button button-primary" href="https://wc-dev-worker.workers.dreamlabs.co.kr/" target="_blank" rel="noreferrer">Worker 열기 ↗</a><a class="button button-quiet" href="https://manual.workers.dreamlabs.co.kr/guide/projects/" target="_blank" rel="noreferrer">Project 가이드</a></div>
+            <span class="worker-note">Application shell 확인 · 권한은 대상 서비스가 판단</span>
+          </article>
+
+          <article class="worker-card" data-directory-card data-tags="support dreamlabs" data-search="Support Worker 지원 support 접근 권한">
+            <div class="worker-card-head"><span class="worker-mark">SP</span><span class="badge controlled">접근 권한 필요</span></div>
+            <h3>Support Worker</h3><p>지원 업무 요청을 처리하는 Worker 진입점입니다.</p>
+            <div class="worker-card-meta"><span class="badge">Support</span><span class="badge">DreamLabs</span></div>
+            <div class="worker-card-actions"><a class="button button-primary" href="https://support-worker.workers.dreamlabs.co.kr/" target="_blank" rel="noreferrer">Worker 열기 ↗</a><a class="button button-quiet" href="https://manual.workers.dreamlabs.co.kr/guide/troubleshooting/" target="_blank" rel="noreferrer">문제 해결</a></div>
+            <span class="worker-note">Application shell 확인 · 권한은 대상 서비스가 판단</span>
+          </article>
+
+          <article class="worker-card" data-directory-card data-tags="development worker-host" data-search="Worker Developer Worker Host 개발 development Google 로그인">
+            <div class="worker-card-head"><span class="worker-mark">WD</span><span class="badge login">Google 로그인</span></div>
+            <h3>Worker Developer</h3><p>Worker 개발 업무를 위한 전용 진입점입니다.</p>
+            <div class="worker-card-meta"><span class="badge">Development</span><span class="badge">Worker Host</span></div>
+            <div class="worker-card-actions"><a class="button button-primary" href="https://dl-worker-developer.workers.dreamlabs.co.kr/" target="_blank" rel="noreferrer">Worker 열기 ↗</a><a class="button button-quiet" href="https://manual.workers.dreamlabs.co.kr/guide/skill-registry/" target="_blank" rel="noreferrer">Skill 가이드</a></div>
+            <span class="worker-note">Native login redirect 확인 · 실시간 상태 아님</span>
+          </article>
+        </div>
+
+        <div class="empty-state" data-directory-empty hidden><strong>조건에 맞는 Worker를 찾지 못했습니다.</strong><p>검색어나 필터를 지우거나 Worker Manual에서 기능을 먼저 찾아보세요.</p></div>
+      </section>
+
+      <section class="section" aria-labelledby="directory-boundary-title">
+        <div class="notice"><span class="notice-mark" aria-hidden="true">i</span><div><strong id="directory-boundary-title">운영자 전용 Worker는 공개 목록에 표시하지 않습니다.</strong><p>정적 사이트의 HTML과 JSON은 누구나 읽을 수 있으므로 제한된 Worker 식별자와 내부 주소는 별도 인증 디렉터리에서만 제공해야 합니다.</p></div></div>
+      </section>
+    </main>
+
+    <footer class="site-footer"><div class="footer-inner"><div class="footer-main"><div class="footer-brand"><strong>DreamLabs Workers Portal</strong><p>공개 가능한 Worker 진입점만 수록한 정적 디렉터리입니다.</p></div><nav class="footer-nav" aria-label="푸터 메뉴"><a href="/workerops/">WorkerOps</a><a href="/ecosystem/">Ecosystem</a><a href="/learn/">Learn</a><a href="/about/">About</a><a href="/status/">Portal status</a></nav></div><div class="footer-bottom"><span>Access labels are not runtime health</span><span>Link review: <time data-catalog-reviewed>불러오는 중</time></span></div></div></footer>
+  </body>
+</html>

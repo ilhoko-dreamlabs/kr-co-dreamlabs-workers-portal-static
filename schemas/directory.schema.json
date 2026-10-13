@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://portal.workers.dreamlabs.co.kr/schemas/directory.schema.json",
+  "title": "DreamLabs Worker Portal directory",
+  "type": "object",
+  "required": ["schemaVersion", "reviewedAt", "source", "items"],
+  "properties": {
+    "schemaVersion": { "const": "2.0.0" },
+    "reviewedAt": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "required": ["kind", "note"],
+      "properties": {
+        "kind": { "const": "operator-reviewed-directory" },
+        "note": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "title", "summary", "url", "audiences", "tags", "access", "exposure", "availability", "linkReview", "actions"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "kind": { "enum": ["worker", "product", "service", "business-system", "guide", "standard", "explanation"] },
+          "title": { "type": "string", "minLength": 1 },
+          "summary": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+          "audiences": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "tags": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "access": { "enum": ["public", "login-required", "access-controlled", "restricted"] },
+          "exposure": { "enum": ["public-listable", "authenticated-directory-only", "not-published"] },
+          "availability": { "enum": ["https-observed", "manifest-backed", "candidate-only", "unavailable"] },
+          "linkReview": {
+            "type": "object",
+            "required": ["expected", "observedAt"],
+            "properties": {
+              "expected": { "type": "string", "minLength": 1 },
+              "observedAt": { "type": "string", "format": "date-time" }
+            },
+            "additionalProperties": false
+          },
+          "actions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["label", "url"],
+              "properties": {
+                "label": { "type": "string", "minLength": 1 },
+                "url": { "type": "string", "format": "uri", "pattern": "^https://" }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

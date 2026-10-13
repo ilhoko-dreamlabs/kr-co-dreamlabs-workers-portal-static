@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">DreamLabs Workers Portal</title>
+  <desc id="desc">세 개의 연결점을 포함한 W 형태의 Portal 표식</desc>
+  <rect width="64" height="64" rx="18" fill="#0d1a24"/>
+  <path d="M14 18 23 46 32 26l9 20 9-28" fill="none" stroke="#7bc7d8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="14" cy="18" r="3.5" fill="#74d3b8"/>
+  <circle cx="32" cy="26" r="3.5" fill="#74d3b8"/>
+  <circle cx="50" cy="18" r="3.5" fill="#74d3b8"/>
+</svg>
