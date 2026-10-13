@@ -52,3 +52,16 @@ those actions completed.
 
 See [DATA-CONTRACT.md](docs/DATA-CONTRACT.md) and
 [OPERATIONS.md](docs/OPERATIONS.md).
+
+## Worker Hub v2 redesign
+
+The next Portal version is being redesigned as a navigation hub for Workers,
+WorkerOps, Worker Host, Worker Gateway, Worker Meet, manuals and UI assets. The
+accepted v1 site remains unchanged while the design is reviewed.
+
+- [Redesign brief](docs/redesign/README.md)
+- [Information architecture](docs/redesign/INFORMATION-ARCHITECTURE.md)
+- [Reviewed link catalog](docs/redesign/LINK-CATALOG.md)
+- [Proposed directory contract](docs/redesign/DATA-CONTRACT.md)
+- [Desktop and mobile wireframes](docs/redesign/WIREFRAMES.md)
+- [Implementation and cutover plan](docs/redesign/IMPLEMENTATION-PLAN.md)
