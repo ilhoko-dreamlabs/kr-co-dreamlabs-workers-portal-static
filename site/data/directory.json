@@ -1,6 +1,6 @@
 {
   "schemaVersion": "2.0.0",
-  "reviewedAt": "2026-10-13T18:07:44+09:00",
+  "reviewedAt": "2026-10-15T18:44:32+09:00",
   "source": {
     "kind": "operator-reviewed-directory",
     "note": "공개 가능한 링크와 접근 유형만 포함한 정적 디렉터리입니다. 실시간 상태나 운영 권한을 제공하지 않습니다."
@@ -17,7 +17,7 @@
       "access": "login-required",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "authenticated-response", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "authenticated-response", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "Worker 열기", "url": "https://worker0.workers.dreamlabs.co.kr/" }]
     },
     {
@@ -31,7 +31,7 @@
       "access": "login-required",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "authenticated-response", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "authenticated-response", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "Worker 열기", "url": "https://worker1.workers.dreamlabs.co.kr/" }]
     },
     {
@@ -45,7 +45,7 @@
       "access": "login-required",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "authenticated-response", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "authenticated-response", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "Worker 열기", "url": "https://claude-worker.workers.dreamlabs.co.kr/" }]
     },
     {
@@ -59,7 +59,7 @@
       "access": "access-controlled",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "application-shell", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "application-shell", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "Worker 열기", "url": "https://dl-sales-worker.workers.dreamlabs.co.kr/" }]
     },
     {
@@ -73,7 +73,7 @@
       "access": "access-controlled",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "application-shell", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "application-shell", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "Worker 열기", "url": "https://dl-dev-worker.workers.dreamlabs.co.kr/" }]
     },
     {
@@ -87,7 +87,7 @@
       "access": "access-controlled",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "application-shell", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "application-shell", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "Worker 열기", "url": "https://wc-dev-worker.workers.dreamlabs.co.kr/" }]
     },
     {
@@ -101,7 +101,7 @@
       "access": "access-controlled",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "application-shell", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "application-shell", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "Worker 열기", "url": "https://support-worker.workers.dreamlabs.co.kr/" }]
     },
     {
@@ -115,7 +115,7 @@
       "access": "login-required",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "native-login-redirect", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "native-login-redirect", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "Worker 열기", "url": "https://dl-worker-developer.workers.dreamlabs.co.kr/" }]
     },
     {
@@ -129,7 +129,7 @@
       "access": "public",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "http-200", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "http-200", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [
         { "label": "소개 보기", "url": "https://worker-host.dreamlabs.co.kr/" },
         { "label": "전체 구조", "url": "https://worker-host.dreamlabs.co.kr/#architecture" }
@@ -146,7 +146,7 @@
       "access": "public",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "http-200", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "http-200", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "WorkerOps 이해하기", "url": "https://worker-host.dreamlabs.co.kr/why-workerops/" }]
     },
     {
@@ -160,8 +160,78 @@
       "access": "public",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "http-200", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "http-200", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "운영 장면 보기", "url": "https://worker-host.dreamlabs.co.kr/workerops-in-action/" }]
+    },
+    {
+      "id": "use-case-sales-data-analysis",
+      "kind": "explanation",
+      "title": "판매·수익성 분석",
+      "summary": "판매·매입·프로모션 자료를 산식과 근거가 보이는 분석 결과로 정리하는 활용 시나리오입니다.",
+      "url": "https://worker-host.dreamlabs.co.kr/use-cases/sales-data-analysis/",
+      "audiences": ["sales", "analyst", "leader"],
+      "tags": ["use-case", "sales", "analysis"],
+      "access": "public",
+      "exposure": "public-listable",
+      "availability": "https-observed",
+      "linkReview": { "expected": "http-200", "observedAt": "2026-10-15T18:44:32+09:00" },
+      "actions": [{ "label": "활용 시나리오 보기", "url": "https://worker-host.dreamlabs.co.kr/use-cases/sales-data-analysis/" }]
+    },
+    {
+      "id": "use-case-institution-documents",
+      "kind": "explanation",
+      "title": "기관 문서업무",
+      "summary": "서식·규정·업무자료를 검토 가능한 문서 초안과 확인 항목으로 정리하는 활용 시나리오입니다.",
+      "url": "https://worker-host.dreamlabs.co.kr/use-cases/institution-documents/",
+      "audiences": ["administrator", "operator", "team"],
+      "tags": ["use-case", "documents", "institution"],
+      "access": "public",
+      "exposure": "public-listable",
+      "availability": "https-observed",
+      "linkReview": { "expected": "http-200", "observedAt": "2026-10-15T18:44:32+09:00" },
+      "actions": [{ "label": "활용 시나리오 보기", "url": "https://worker-host.dreamlabs.co.kr/use-cases/institution-documents/" }]
+    },
+    {
+      "id": "use-case-business-operations",
+      "kind": "explanation",
+      "title": "기업 운영업무",
+      "summary": "회의·요청·실적자료를 다음 행동이 보이는 업무 결과로 구조화하는 활용 시나리오입니다.",
+      "url": "https://worker-host.dreamlabs.co.kr/use-cases/business-operations/",
+      "audiences": ["operator", "leader", "team"],
+      "tags": ["use-case", "business", "operations"],
+      "access": "public",
+      "exposure": "public-listable",
+      "availability": "https-observed",
+      "linkReview": { "expected": "http-200", "observedAt": "2026-10-15T18:44:32+09:00" },
+      "actions": [{ "label": "활용 시나리오 보기", "url": "https://worker-host.dreamlabs.co.kr/use-cases/business-operations/" }]
+    },
+    {
+      "id": "use-case-youtube-content-operations",
+      "kind": "explanation",
+      "title": "유튜브 콘텐츠 운영",
+      "summary": "기획부터 공개 후 피드백까지 사람의 승인과 독립 요청으로 이어가는 활용 시나리오입니다.",
+      "url": "https://worker-host.dreamlabs.co.kr/use-cases/youtube-content-operations/",
+      "audiences": ["creator", "operator", "team"],
+      "tags": ["use-case", "content", "youtube"],
+      "access": "public",
+      "exposure": "public-listable",
+      "availability": "https-observed",
+      "linkReview": { "expected": "http-200", "observedAt": "2026-10-15T18:44:32+09:00" },
+      "actions": [{ "label": "활용 시나리오 보기", "url": "https://worker-host.dreamlabs.co.kr/use-cases/youtube-content-operations/" }]
+    },
+    {
+      "id": "use-case-software-team",
+      "kind": "explanation",
+      "title": "작은 개발팀",
+      "summary": "제품·개발·QA 역할자가 각자의 Worker에 독립 요청하고 결과를 검토하는 활용 시나리오입니다.",
+      "url": "https://worker-host.dreamlabs.co.kr/use-cases/software-team/",
+      "audiences": ["developer", "qa", "product"],
+      "tags": ["use-case", "software", "team"],
+      "access": "public",
+      "exposure": "public-listable",
+      "availability": "https-observed",
+      "linkReview": { "expected": "http-200", "observedAt": "2026-10-15T18:44:32+09:00" },
+      "actions": [{ "label": "활용 시나리오 보기", "url": "https://worker-host.dreamlabs.co.kr/use-cases/software-team/" }]
     },
     {
       "id": "worker-gateway",
@@ -174,7 +244,7 @@
       "access": "login-required",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "sign-in-page", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "sign-in-page", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "로그인 화면", "url": "https://workers.dreamlabs.co.kr/oauth2/sign_in" }]
     },
     {
@@ -188,7 +258,7 @@
       "access": "login-required",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "application-shell", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "application-shell", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "Worker Meet 열기", "url": "https://worker-meet.dreamlabs.co.kr/" }]
     },
     {
@@ -202,7 +272,7 @@
       "access": "public",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "http-200", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "http-200", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "매뉴얼 열기", "url": "https://manual.workers.dreamlabs.co.kr/" }]
     },
     {
@@ -216,7 +286,7 @@
       "access": "public",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "http-200", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "http-200", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "Asset Pack 열기", "url": "https://assets.dreamlabs.co.kr/" }]
     },
     {
@@ -230,7 +300,7 @@
       "access": "access-controlled",
       "exposure": "public-listable",
       "availability": "https-observed",
-      "linkReview": { "expected": "application-shell", "observedAt": "2026-10-13T18:07:44+09:00" },
+      "linkReview": { "expected": "application-shell", "observedAt": "2026-10-15T18:44:32+09:00" },
       "actions": [{ "label": "HR System 열기", "url": "https://hr.dreamlabs.co.kr/" }]
     }
   ]
