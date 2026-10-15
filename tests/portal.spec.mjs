@@ -41,6 +41,20 @@ test("HR remains a connected business system outside WorkerOps runtime", async (
   assert.match(workerops, /Worker runtime 또는 WorkerOps 제어 소유권/u);
 });
 
+test("reviewed Worker Host use cases are published without runtime claims", async () => {
+  const [directory, collections, learn] = await Promise.all([
+    read("site/data/directory.json").then(JSON.parse),
+    read("site/data/collections.json").then(JSON.parse),
+    read("site/learn/index.html"),
+  ]);
+  const collection = collections.collections.find((item) => item.id === "worker-host-use-cases");
+  assert.equal(collection.itemIds.length, 5);
+  assert.ok(collection.itemIds.every((id) => directory.items.some((item) => item.id === id && item.kind === "explanation")));
+  assert.match(learn, /판매·수익성 분석/u);
+  assert.match(learn, /작은 개발팀/u);
+  assert.doesNotMatch(learn, /candidate-202610/u);
+});
+
 test("portal uses only the approved tracked Asset Pack runtime asset", async () => {
   const [lock, css, index] = await Promise.all([
     read("config/asset-lock.json").then(JSON.parse),

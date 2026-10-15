@@ -1,6 +1,6 @@
 # Reviewed link catalog
 
-Review date: 2026-10-13 KST
+Review date: 2026-10-15 KST
 
 Scope: unauthenticated external HTTPS read only
 
@@ -30,6 +30,20 @@ acceptance, authorization, Worker health or current image identity.
 | Worker Manual | `https://manual.workers.dreamlabs.co.kr/` | HTTPS 200 | User/admin guide hub |
 | DreamLabs Assets | `https://assets.dreamlabs.co.kr/` | HTTPS 200; Asset Pack 0.1.2 candidate-inspection, mixed approval | Brand, Worker, product and footer assets |
 | DreamLabs HR System | `https://hr.dreamlabs.co.kr/` | HTTPS 200; application shell and route manifest reviewed | Connected organization/role system; access policy owner review required |
+
+## Worker Host use cases
+
+The Worker Host public site exposed the following stable use-case routes during
+the 2026-10-15 review. These are product explanations, not named Worker health
+or deployment evidence.
+
+| Use case | URL | Observed result |
+|---|---|---|
+| 판매·수익성 분석 | `https://worker-host.dreamlabs.co.kr/use-cases/sales-data-analysis/` | HTTPS 200 |
+| 기관 문서업무 | `https://worker-host.dreamlabs.co.kr/use-cases/institution-documents/` | HTTPS 200 |
+| 기업 운영업무 | `https://worker-host.dreamlabs.co.kr/use-cases/business-operations/` | HTTPS 200 |
+| 유튜브 콘텐츠 운영 | `https://worker-host.dreamlabs.co.kr/use-cases/youtube-content-operations/` | HTTPS 200 |
+| 작은 개발팀 | `https://worker-host.dreamlabs.co.kr/use-cases/software-team/` | HTTPS 200 |
 
 The Gateway entry is secondary. Users normally select a Worker first and are
 then sent through the correct authentication boundary.

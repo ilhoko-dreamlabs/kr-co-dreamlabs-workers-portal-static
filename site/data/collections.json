@@ -3,6 +3,7 @@
   "collections": [
     { "id": "workers", "title": "Workers", "itemIds": ["worker-0", "worker-1", "claude-worker", "dl-sales-worker", "dl-dev-worker", "wc-dev-worker", "support-worker", "worker-developer"] },
     { "id": "workerops", "title": "WorkerOps", "itemIds": ["workerops-overview", "workerops-in-action", "worker-host", "worker-gateway", "worker-meet"] },
+    { "id": "worker-host-use-cases", "title": "Worker Host use cases", "itemIds": ["use-case-sales-data-analysis", "use-case-institution-documents", "use-case-business-operations", "use-case-youtube-content-operations", "use-case-software-team"] },
     { "id": "learn", "title": "Learn and build", "itemIds": ["worker-manual", "dreamlabs-assets", "worker-host"] },
     { "id": "connected-systems", "title": "Connected systems", "itemIds": ["hr-system"] }
   ]
