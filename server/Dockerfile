@@ -1,4 +1,4 @@
-FROM node:24.13.0-bookworm-slim@sha256:4660b1ca8b28d6d1906fd644abe34b2ed81d15434d26d845ef0aced307cf4b6f
+FROM node:24.22.0-bookworm-slim@sha256:a5f4366e834695d5f363b920c104953a535d3a9864d1bdf74566a0ebe01daee5
 
 LABEL org.opencontainers.image.title="DreamLabs Workers Portal download server"
 LABEL org.opencontainers.image.source="https://github.com/ilhoko-dreamlabs/kr-co-dreamlabs-workers-portal-static"

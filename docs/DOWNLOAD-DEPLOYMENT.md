@@ -24,7 +24,7 @@ browser native POST
   -> one read-only private ZIP mount
 ```
 
-The selected runtime candidate is Node 24.13.0 on Debian bookworm-slim, pinned by the
+The selected runtime candidate is Node 24.22.0 on Debian bookworm-slim, pinned by the
 multi-platform OCI digest in `server/Dockerfile`. SRV53 is selected because the
 authoritative host inventory assigns it the application-runtime role; Docker2 remains
 the DNS, TLS and reverse-proxy owner. The Linux deployment example uses host networking
