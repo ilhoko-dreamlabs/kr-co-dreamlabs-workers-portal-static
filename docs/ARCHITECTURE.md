@@ -1,7 +1,8 @@
 # Static Portal architecture
 
-The Portal is a static, credential-free navigation layer. It explains public-safe
-service responsibilities and links users to each service's own authentication boundary.
+The Portal deployable remains a credential-free static navigation layer. Its download
+form accepts a user-entered key but JavaScript never reads or stores it: the browser
+posts it directly to a separately deployed server that owns validation and streaming.
 
 | Area | Decision | Boundary |
 |---|---|---|
@@ -14,6 +15,7 @@ service responsibilities and links users to each service's own authentication bo
 | hosting | GitHub Pages custom workflow | source, artifact and deployment remain distinct |
 | public domain | `portal.workers.dreamlabs.co.kr` | parent and sibling services remain independent |
 | runtime control | none | enforced in data contract and browser-code checks |
+| Portable download | native HTTPS POST form plus separate Node server | no ZIP, key verifier or private path in Pages/dist |
 
 ## Publication flow
 
@@ -26,9 +28,19 @@ operator-reviewed public links
   -> custom-domain and external HTTPS acceptance
 ```
 
-The browser fetches only `portal-status.json` and the artifact's `build-manifest.json`
-from the same origin. Search and filters run on HTML already packaged with the site.
-There are no authenticated API calls, service tokens, WebSockets or control commands.
+The browser fetches only reviewed public status/config JSON and the artifact's
+`build-manifest.json` from the same origin. Search and filters run on packaged HTML.
+There are no service tokens, WebSockets or Worker control commands. The download form
+uses one explicitly configured HTTPS endpoint and sends `artifactId` plus the user's
+key as an `application/x-www-form-urlencoded` POST. Successful response bytes stream
+as an attachment; the static script does not buffer the ZIP or read the key.
+
+The server source lives under `server/` but is never copied to Pages `dist/`. It binds
+to loopback, requires an exact public Portal `Origin`, compares SHA-256 key verifiers,
+maps one reviewed artifact ID to one absolute file outside the repository, and supports
+one bounded byte range. External TLS/reverse proxy and process supervision are separate
+deployment responsibilities. It has no administrator login, customer account model,
+quota, license activation or Worker runtime authority.
 
 ## Responsibility boundaries
 
@@ -41,6 +53,7 @@ There are no authenticated API calls, service tokens, WebSockets or control comm
 - DreamLabs HR System is a connected business system, not WorkerOps infrastructure or
   Worker runtime.
 - Portal owns only public navigation, explanation and its own publication facts.
+- Download server owns only configured-key matching and configured private ZIP transfer.
 
 Operator-only Workers, internal management endpoints and raw operational evidence are
 intentionally absent from the public directory.

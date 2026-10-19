@@ -115,3 +115,52 @@ async function loadPublicationFacts() {
 }
 
 loadPublicationFacts();
+
+async function loadDownloadConfig() {
+  const form = document.querySelector("[data-download-form]");
+  if (!form) return;
+  const keyInput = form.querySelector("[data-download-key]");
+  const artifactInput = form.querySelector("[data-download-artifact]");
+  const submit = form.querySelector("[data-download-submit]");
+  const product = document.querySelector("[data-download-product]");
+  const status = document.querySelector("[data-download-status]");
+
+  const unavailable = (message) => {
+    form.removeAttribute("action");
+    if (keyInput) keyInput.disabled = true;
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = "아직 다운로드할 수 없습니다";
+    }
+    if (status) status.textContent = message;
+  };
+
+  try {
+    const response = await fetch("/data/download-config.json", { cache: "no-cache", credentials: "same-origin" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const config = await response.json();
+    if (product) {
+      const detail = [config.artifact?.label, config.artifact?.version].filter(Boolean).join(" · ");
+      product.textContent = detail || "Worker Portable";
+    }
+    if (!config.enabled) {
+      unavailable("현재 제품용 Portable ZIP이 게시되지 않았습니다.");
+      return;
+    }
+    const endpoint = new URL(config.endpoint);
+    if (endpoint.protocol !== "https:" || !endpoint.hostname.endsWith(".workers.dreamlabs.co.kr")) {
+      throw new Error("unapproved endpoint");
+    }
+    if (!config.artifact?.id) throw new Error("missing artifact id");
+    form.action = endpoint.href;
+    artifactInput.value = config.artifact.id;
+    keyInput.disabled = false;
+    submit.disabled = false;
+    submit.textContent = "ZIP 다운로드";
+    status.textContent = "전달받은 키를 입력한 뒤 ZIP 다운로드를 누르세요.";
+  } catch {
+    unavailable("다운로드 설정을 확인할 수 없습니다. 운영 담당자에게 문의하세요.");
+  }
+}
+
+loadDownloadConfig();

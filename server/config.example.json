@@ -1,0 +1,19 @@
+{
+  "listen": {
+    "host": "127.0.0.1",
+    "port": 4181
+  },
+  "publicOrigins": [
+    "https://portal.workers.dreamlabs.co.kr"
+  ],
+  "keyVerifiers": [
+    "replace-with-a-lowercase-sha256-verifier"
+  ],
+  "artifacts": [
+    {
+      "id": "worker-portable",
+      "path": "replace-with-an-absolute-path-outside-this-repository",
+      "filename": "dreamlabs-worker-portable.zip"
+    }
+  ]
+}

@@ -20,6 +20,21 @@ test("portal stays a static navigation hub without runtime authority", async () 
   assert.equal(status.liveWorkerData, false);
 });
 
+test("download UI is unavailable until a reviewed server artifact is published", async () => {
+  const [page, script, config] = await Promise.all([
+    read("site/download/index.html"),
+    read("site/js/portal.js"),
+    read("site/data/download-config.json").then(JSON.parse),
+  ]);
+  assert.equal(config.enabled, false);
+  assert.equal(config.endpoint, "");
+  assert.equal(config.artifact.status, "not-published");
+  assert.match(page, /method="post"/u);
+  assert.match(page, /name="key"[^>]*type="password"[^>]*disabled/u);
+  assert.match(page, /현재 제품용 Portable ZIP이 게시되지 않았습니다/u);
+  assert.doesNotMatch(script, /keyInput\.value|localStorage|sessionStorage|fetch\([^)]*downloads/iu);
+});
+
 test("directory publishes eight role Workers and omits privileged operations", async () => {
   const directory = JSON.parse(await read("site/data/directory.json"));
   const workers = directory.items.filter((item) => item.kind === "worker");
@@ -90,11 +105,27 @@ test("public routes and schema identifiers use the accepted custom domain", asyn
 });
 
 test("every navigable page has one h1 and packaged browser assets", async () => {
-  const pages = ["index.html", "workers/index.html", "workerops/index.html", "ecosystem/index.html", "learn/index.html", "about/index.html", "status/index.html"];
+  const pages = ["index.html", "workers/index.html", "workerops/index.html", "ecosystem/index.html", "learn/index.html", "download/index.html", "about/index.html", "status/index.html"];
   for (const page of pages) {
     const html = await read(`site/${page}`);
     assert.equal((html.match(/<h1\b/gu) || []).length, 1, page);
     assert.match(html, /href="\/css\/portal\.css"/u, page);
     assert.match(html, /src="\/js\/portal\.js"/u, page);
   }
+});
+
+test("download container source is pinned and excludes private inputs", async () => {
+  const [dockerfile, dockerignore, compose] = await Promise.all([
+    read("server/Dockerfile"),
+    read(".dockerignore"),
+    read("server/compose.example.yml"),
+  ]);
+  assert.match(dockerfile, /^FROM node:24\.13\.0-bookworm-slim@sha256:[a-f0-9]{64}$/mu);
+  assert.match(dockerfile, /USER node/u);
+  assert.doesNotMatch(dockerfile, /config\.local|private-artifacts|\.zip/u);
+  assert.match(dockerignore, /\*\*/u);
+  assert.match(compose, /read_only: true/u);
+  assert.match(compose, /network_mode: host/u);
+  assert.match(compose, /no-new-privileges:true/u);
+  assert.doesNotMatch(compose, /keyVerifiers|download-key/u);
 });

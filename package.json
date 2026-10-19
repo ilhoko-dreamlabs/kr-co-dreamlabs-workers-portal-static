@@ -5,10 +5,12 @@
   "type": "module",
   "description": "DreamLabs Worker Portal static site",
   "scripts": {
-    "check": "node scripts/validate.mjs && node --test tests/portal.spec.mjs",
+    "check": "node scripts/validate.mjs && node --test tests/portal.spec.mjs tests/download-server.spec.mjs",
     "build": "node scripts/package.mjs",
     "check:dist": "node scripts/validate.mjs --dist dist",
-    "serve": "node scripts/serve.mjs site 4178"
+    "serve": "node scripts/serve.mjs site 4178",
+    "serve:download": "node server/index.mjs",
+    "hash:download-key": "node server/hash-key.mjs"
   },
   "engines": {
     "node": ">=24"

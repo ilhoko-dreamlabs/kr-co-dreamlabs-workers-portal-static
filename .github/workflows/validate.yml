@@ -35,6 +35,8 @@ jobs:
         run: npm run build
       - name: Validate artifact
         run: npm run check:dist
+      - name: Build isolated download server image
+        run: docker build --file server/Dockerfile --tag worker-portal-download:${{ github.sha }} .
       - name: Upload validation artifact
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

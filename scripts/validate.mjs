@@ -12,6 +12,7 @@ const requiredFiles = [
   "workerops/index.html",
   "ecosystem/index.html",
   "learn/index.html",
+  "download/index.html",
   "about/index.html",
   "status/index.html",
   "css/portal.css",
@@ -19,6 +20,7 @@ const requiredFiles = [
   "data/directory.json",
   "data/collections.json",
   "data/portal-status.json",
+  "data/download-config.json",
 ];
 const pageFiles = requiredFiles.filter((relative) => relative.endsWith(".html"));
 const allowedHosts = new Set([
@@ -88,11 +90,14 @@ const script = await read("js/portal.js");
 const directory = JSON.parse(await read("data/directory.json"));
 const collections = JSON.parse(await read("data/collections.json"));
 const portalStatus = JSON.parse(await read("data/portal-status.json"));
+const downloadConfig = JSON.parse(await read("data/download-config.json"));
 
 check(!/\beval\s*\(/u.test(script), "eval is prohibited");
-check(!/\/api\/|Authorization|WebSocket|EventSource|localStorage|sessionStorage/u.test(script), "browser code must stay outside runtime/authentication APIs");
+check(!/\/api\/|Authorization|WebSocket|EventSource|localStorage|sessionStorage/u.test(script), "browser script must not contain runtime/authentication APIs or persisted credentials");
 check(script.includes('fetch("/data/portal-status.json"'), "browser must read only the publication boundary snapshot");
 check(script.includes('fetch("/build-manifest.json"'), "browser must read the packaged build manifest");
+check(script.includes('fetch("/data/download-config.json"'), "browser must read the reviewed public download availability config");
+check(!/keyInput\.value|formData|URLSearchParams\([^)]*key/iu.test(script), "browser script must not read or transform the download key");
 
 check(directory.schemaVersion === "2.0.0", "Unsupported directory schemaVersion");
 check(Number.isFinite(Date.parse(directory.reviewedAt)), "directory reviewedAt must be an ISO timestamp");
@@ -135,6 +140,27 @@ check(portalStatus.schemaVersion === "2.0.0", "Unsupported portal status schemaV
 check(portalStatus.mode === "public-static-directory", "Portal mode must remain static");
 check(portalStatus.runtimeAuthority === false && portalStatus.liveWorkerData === false, "Portal must not claim runtime authority or live data");
 check(Number.isFinite(Date.parse(portalStatus.catalogReviewedAt)), "Portal catalog review timestamp is invalid");
+
+check(downloadConfig.schemaVersion === "1.0.0", "Unsupported download config schemaVersion");
+check(typeof downloadConfig.enabled === "boolean", "download enabled must be boolean");
+check(typeof downloadConfig.endpoint === "string", "download endpoint must be a string");
+check(typeof downloadConfig.artifact?.id === "string" && /^[a-z0-9][a-z0-9._-]*$/u.test(downloadConfig.artifact.id), "download artifact id is invalid");
+check(typeof downloadConfig.artifact?.label === "string" && downloadConfig.artifact.label.length > 0, "download artifact label is required");
+if (downloadConfig.enabled) {
+  check(isAllowedPublicUrl(downloadConfig.endpoint), "enabled download endpoint must be an allowlisted HTTPS Worker host");
+  check(downloadConfig.artifact.status === "published", "enabled download artifact must be published");
+  check(typeof downloadConfig.artifact.version === "string" && downloadConfig.artifact.version.length > 0, "enabled download artifact version is required");
+  check(Number.isSafeInteger(downloadConfig.artifact.sizeBytes) && downloadConfig.artifact.sizeBytes > 0, "enabled download artifact size is required");
+  check(/^[a-f0-9]{64}$/u.test(downloadConfig.artifact.sha256), "enabled download artifact SHA-256 is required");
+} else {
+  check(downloadConfig.endpoint === "", "disabled download endpoint must remain empty");
+  check(downloadConfig.artifact.status === "not-published", "disabled download artifact must not claim publication");
+}
+
+const downloadPage = await read("download/index.html");
+check(/<form\b[^>]*method="post"[^>]*data-download-form/iu.test(downloadPage), "download page must use a native POST form");
+check(/<input\b[^>]*name="key"[^>]*type="password"[^>]*disabled/iu.test(downloadPage), "download key input must start disabled");
+check(/form-action https:/u.test(downloadPage), "download page CSP must restrict submission to HTTPS");
 
 const files = await walk(siteRoot);
 for (const file of files) {
