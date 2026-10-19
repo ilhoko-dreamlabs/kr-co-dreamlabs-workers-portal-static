@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="승인된 다운로드 키로 DreamLabs Worker Portable ZIP을 받는 안내 페이지" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://assets.dreamlabs.co.kr; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action https:" />
+    <title>Download · DreamLabs Workers Portal</title>
+    <link rel="icon" href="https://assets.dreamlabs.co.kr/agents/dreamlabs-worker/icon/dreamlabs-bot-icon.png" type="image/png" />
+    <link rel="stylesheet" href="/css/portal.css" />
+    <script src="/js/portal.js" defer></script>
+  </head>
+  <body data-page="download">
+    <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
+    <header class="site-header"><div class="header-inner"><a class="brand" href="/" aria-label="DreamLabs Workers Portal 홈"><img src="https://assets.dreamlabs.co.kr/agents/dreamlabs-worker/icon/dreamlabs-bot-icon.png" alt="" /><span class="brand-copy"><strong>DREAMLABS WORKERS</strong><small>PORTAL</small></span></a><button class="menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="site-navigation" data-menu-toggle><span></span></button><nav class="site-nav" id="site-navigation" aria-label="주요 메뉴" data-site-nav><a href="/" data-nav-key="portal">Portal</a><a href="/workers/" data-nav-key="workers">Workers</a><a href="/workerops/" data-nav-key="workerops">WorkerOps</a><a href="/ecosystem/" data-nav-key="ecosystem">Ecosystem</a><a href="/learn/" data-nav-key="learn">Learn</a><a href="/download/" data-nav-key="download">Download</a></nav><a class="header-action" href="https://manual.workers.dreamlabs.co.kr/" target="_blank" rel="noreferrer">설치 안내 ↗</a></div></header>
+    <main id="main-content">
+      <section class="page-hero" aria-labelledby="page-title"><p class="eyebrow">PORTABLE WORKER</p><h1 id="page-title">다운로드 키로<br />Portable ZIP 받기</h1><p class="page-lead">제품 ZIP이 준비되면 전달받은 다운로드 키를 입력해 파일을 저장할 수 있습니다. 지원 환경과 실행 방법은 함께 제공되는 매뉴얼을 확인하세요.</p></section>
+
+      <section class="section" aria-labelledby="download-title">
+        <div class="download-layout">
+          <article class="download-panel">
+            <p class="eyebrow">SECURE DOWNLOAD</p>
+            <h2 id="download-title">Worker Portable</h2>
+            <p class="download-product" data-download-product>배포 정보를 확인하는 중입니다.</p>
+            <form class="download-form" method="post" enctype="application/x-www-form-urlencoded" autocomplete="off" data-download-form>
+              <input type="hidden" name="artifactId" value="" data-download-artifact />
+              <label class="download-field" for="download-key"><span>다운로드 키</span><input id="download-key" name="key" type="password" minlength="16" maxlength="512" autocomplete="off" autocapitalize="none" spellcheck="false" disabled required data-download-key /></label>
+              <button class="button button-primary" type="submit" disabled data-download-submit>아직 다운로드할 수 없습니다</button>
+            </form>
+            <p class="download-status" role="status" aria-live="polite" data-download-status>현재 제품용 Portable ZIP이 게시되지 않았습니다.</p>
+          </article>
+          <aside class="download-guidance" aria-label="다운로드 순서">
+            <h2>다운로드 순서</h2>
+            <ol>
+              <li><strong>다운로드 키를 입력합니다.</strong><span>담당자로부터 전달받은 키를 그대로 입력하세요.</span></li>
+              <li><strong>ZIP 파일을 저장합니다.</strong><span>다운로드가 시작되면 안전한 작업 폴더에 저장하세요.</span></li>
+              <li><strong>매뉴얼을 확인합니다.</strong><span>지원 OS, 파일 검증과 실행 순서를 확인한 뒤 시작하세요.</span></li>
+            </ol>
+            <p class="download-key-note">다운로드 키는 파일을 받는 데만 사용하며 Worker 실행 인증에는 사용하지 않습니다.</p>
+          </aside>
+        </div>
+      </section>
+
+      <div class="section-soft"><section class="section" aria-labelledby="before-title"><div class="section-head"><div><p class="eyebrow">BEFORE YOU START</p><h2 id="before-title">다운로드 전에 확인하세요</h2></div></div><div class="status-grid"><article class="status-card"><small>01 · KEY</small><strong>전달받은 키 준비</strong><p>키를 URL이나 메신저 공개 채널에 붙이지 마세요.</p></article><article class="status-card"><small>02 · VERIFY</small><strong>파일 무결성 확인</strong><p>게시 후 표시되는 SHA-256과 서명 정보를 기준으로 확인합니다.</p></article><article class="status-card"><small>03 · OFFLINE</small><strong>설치 안내 확인</strong><p>지원 OS와 선행 조건은 함께 제공되는 오프라인 매뉴얼을 따릅니다.</p></article></div></section></div>
+    </main>
+    <footer class="site-footer"><div class="footer-inner"><div class="footer-main"><div class="footer-brand"><strong>DreamLabs Workers Portal</strong><p>Worker와 관련 서비스를 찾기 위한 공개 안내 Portal입니다.</p></div><nav class="footer-nav" aria-label="푸터 메뉴"><a href="/workers/">Workers</a><a href="/workerops/">WorkerOps</a><a href="/ecosystem/">Ecosystem</a><a href="/learn/">Learn</a><a href="/download/">Download</a><a href="/about/">About</a><a href="/status/">Portal status</a></nav></div><div class="footer-bottom"><span>Portable Worker download</span><span>Link review: <time data-catalog-reviewed>불러오는 중</time></span></div></div></footer>
+  </body>
+</html>

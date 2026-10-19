@@ -1,6 +1,6 @@
 # Portal data contracts
 
-The Portal publishes three JSON documents. All are static source files reviewed before
+The Portal publishes four JSON documents. All are static source files reviewed before
 release; none is a live Worker API.
 
 ## `site/data/directory.json`
@@ -30,6 +30,15 @@ health or user authorization.
 - records only the catalog review timestamp and the Portal's static-publication boundary;
 - `runtimeAuthority` and `liveWorkerData` must remain `false`.
 
+## `site/data/download-config.json`
+
+- schema version `1.0.0`;
+- publishes only availability, the public artifact ID/label and, after release, version,
+  byte size and SHA-256;
+- remains `enabled: false`, with an empty endpoint and `not-published` artifact until
+  a real ZIP, separate download server and external HTTPS acceptance exist;
+- never contains a key, verifier, private filesystem path or storage origin.
+
 ## Public-data rules
 
 Updates require schema/static validation, tests, source review and a new Git commit.
@@ -37,3 +46,5 @@ Credentials, tokens, cookies, authorization headers, private network addresses, 
 filesystem paths, internal request IDs, internal management endpoints and operator-only
 Worker identities are prohibited. The build manifest identifies only the Portal source
 revision and its packaged files; it makes no claim about another service's deployment.
+The download server's ignored private config is outside this public-data contract and
+must not be copied into `site/` or `dist/`.

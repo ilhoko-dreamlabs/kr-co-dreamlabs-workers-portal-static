@@ -1,0 +1,18 @@
+services:
+  worker-download:
+    image: ${WORKERS_DOWNLOAD_IMAGE:?set an immutable image reference}
+    container_name: dreamlabs-workers-download
+    network_mode: host
+    restart: unless-stopped
+    read_only: true
+    environment:
+      WORKERS_DOWNLOAD_CONFIG: /run/secrets/download-config.json
+    volumes:
+      - ${WORKERS_DOWNLOAD_CONFIG_FILE:?set a private config path}:/run/secrets/download-config.json:ro
+      - ${WORKERS_DOWNLOAD_ARTIFACT_FILE:?set an immutable ZIP path}:/srv/private-artifacts/worker-portable.zip:ro
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=16m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
