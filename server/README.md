@@ -27,9 +27,12 @@ placed in a URL, log, static JSON, browser storage or repository file.
 5. Set `WORKERS_DOWNLOAD_CONFIG` to that file and run `npm run serve:download`.
 
 Adding or deleting a key means editing `keyVerifiers` and restarting the process. There
-is no administrator login, SSO, RBAC or management UI. The server binds to loopback;
-approved external HTTPS ingress and exact `Origin` forwarding belong to a separately
-configured reverse proxy. Do not weaken the source binding to publish it directly.
+is no administrator login, SSO, RBAC or management UI. The server accepts only loopback
+or one literal RFC1918 listen address. The production candidate binds the exact private
+SRV53 interface and is reachable only from the Docker2 reverse proxy; hostnames,
+wildcard binds and public addresses fail configuration loading. Approved external HTTPS
+ingress and exact `Origin` forwarding belong to the separately managed reverse proxy.
+Do not publish the application listener directly.
 
 The committed Portal config remains disabled until a real Portable ZIP, server endpoint
 and external HTTPS acceptance exist. The download key authorizes acquisition only; the
