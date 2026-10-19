@@ -4,6 +4,7 @@ services:
     container_name: dreamlabs-workers-download
     network_mode: host
     restart: unless-stopped
+    init: true
     read_only: true
     environment:
       WORKERS_DOWNLOAD_CONFIG: /run/secrets/download-config.json
@@ -16,3 +17,8 @@ services:
       - ALL
     security_opt:
       - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"

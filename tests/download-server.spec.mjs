@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { createConnection } from "node:net";
-import { createDownloadServer, hashDownloadKey, isPathInside, normalizeConfig } from "../server/download-server.mjs";
+import { createDownloadServer, hashDownloadKey, isApprovedListenHost, isPathInside, normalizeConfig } from "../server/download-server.mjs";
 
 const repositoryRoot = path.resolve(import.meta.dirname, "..");
 const portalOrigin = "https://portal.workers.dreamlabs.co.kr";
@@ -104,7 +104,7 @@ test("authorized range request streams a bounded segment", async () => {
   }
 });
 
-test("configuration rejects repository-hosted artifacts and external binds", async () => {
+test("configuration rejects repository-hosted artifacts and non-private binds", async () => {
   const base = {
     listen: { host: "127.0.0.1", port: 4181 },
     publicOrigins: [portalOrigin],
@@ -112,7 +112,18 @@ test("configuration rejects repository-hosted artifacts and external binds", asy
     artifacts: [{ id: artifactId, path: path.join(repositoryRoot, "site", "index.html"), filename: "worker.zip" }],
   };
   await assert.rejects(() => normalizeConfig(base, { repositoryRoot }), /outside the repository/u);
-  await assert.rejects(() => normalizeConfig({ ...base, listen: { host: "0.0.0.0", port: 4181 } }, { repositoryRoot }), /loopback binding/u);
+  for (const host of ["0.0.0.0", "8.8.8.8", "download.workers.dreamlabs.co.kr"]) {
+    await assert.rejects(() => normalizeConfig({ ...base, listen: { host, port: 4181 } }, { repositoryRoot }), /loopback or one exact RFC1918/u);
+  }
+});
+
+test("listen host allows loopback and exact RFC1918 addresses only", () => {
+  for (const host of ["127.0.0.1", "::1", "localhost", "10.20.30.40", "172.16.0.1", "172.31.255.254", "192.168.50.53"]) {
+    assert.equal(isApprovedListenHost(host), true, host);
+  }
+  for (const host of ["0.0.0.0", "::", "172.15.0.1", "172.32.0.1", "169.254.1.1", "1.1.1.1", "srv53"]) {
+    assert.equal(isApprovedListenHost(host), false, host);
+  }
 });
 
 test("path boundary treats another Windows drive as outside", () => {
@@ -138,6 +149,7 @@ test("malformed request target is contained by the server boundary", async () =>
     assert.match(rawResponse, /^HTTP\/1\.1 400 /u);
     const health = await fetch(`${fixture.baseUrl}/healthz`);
     assert.equal(health.status, 200);
+    assert.deepEqual(await health.json(), { status: "ready" });
   } finally {
     await fixture.close();
   }

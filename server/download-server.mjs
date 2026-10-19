@@ -2,6 +2,7 @@ import { createHash, timingSafeEqual } from "node:crypto";
 import { createReadStream } from "node:fs";
 import { readFile, realpath, stat } from "node:fs/promises";
 import { createServer } from "node:http";
+import { isIP } from "node:net";
 import path from "node:path";
 
 const MAX_BODY_BYTES = 4096;
@@ -20,6 +21,13 @@ function matchesVerifier(digest, verifier) {
 export function isPathInside(parent, candidate, pathApi = path) {
   const relative = pathApi.relative(parent, candidate);
   return relative === "" || (!pathApi.isAbsolute(relative) && !relative.startsWith(`..${pathApi.sep}`) && relative !== "..");
+}
+
+export function isApprovedListenHost(host) {
+  if (host === "127.0.0.1" || host === "::1" || host === "localhost") return true;
+  if (isIP(host) !== 4) return false;
+  const [first, second] = host.split(".").map(Number);
+  return first === 10 || (first === 172 && second >= 16 && second <= 31) || (first === 192 && second === 168);
 }
 
 function safeFilename(value) {
@@ -96,8 +104,8 @@ export async function normalizeConfig(input, options = {}) {
   const repositoryRoot = path.resolve(options.repositoryRoot || path.resolve(import.meta.dirname, ".."));
   const host = input?.listen?.host || "127.0.0.1";
   const port = Number(input?.listen?.port || 4181);
-  if (host !== "127.0.0.1" && host !== "::1" && host !== "localhost") {
-    throw new Error("Default source implementation permits loopback binding only; use an approved reverse proxy for external ingress");
+  if (!isApprovedListenHost(host)) {
+    throw new Error("listen.host must be loopback or one exact RFC1918 address behind an approved reverse proxy");
   }
   if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error("listen.port must be a valid TCP port");
 
@@ -148,7 +156,7 @@ export async function loadConfig(configPath, options = {}) {
 async function handleRequest(config, request, response) {
     const url = new URL(request.url || "/", "http://127.0.0.1");
     if (request.method === "GET" && url.pathname === "/healthz") {
-      json(response, 200, { status: "ready", artifactCount: config.artifacts.size });
+      json(response, 200, { status: "ready" });
       return;
     }
     if (request.method !== "POST" || url.pathname !== "/v1/downloads") {
