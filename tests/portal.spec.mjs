@@ -115,10 +115,11 @@ test("every navigable page has one h1 and packaged browser assets", async () => 
 });
 
 test("download container source is pinned and excludes private inputs", async () => {
-  const [dockerfile, dockerignore, compose] = await Promise.all([
+  const [dockerfile, dockerignore, compose, workflow] = await Promise.all([
     read("server/Dockerfile"),
     read(".dockerignore"),
     read("server/compose.example.yml"),
+    read(".github/workflows/download-image.yml"),
   ]);
   assert.match(dockerfile, /^FROM node:24\.13\.0-bookworm-slim@sha256:[a-f0-9]{64}$/mu);
   assert.match(dockerfile, /USER node/u);
@@ -128,4 +129,10 @@ test("download container source is pinned and excludes private inputs", async ()
   assert.match(compose, /network_mode: host/u);
   assert.match(compose, /no-new-privileges:true/u);
   assert.doesNotMatch(compose, /keyVerifiers|download-key/u);
+  assert.match(workflow, /workflow_dispatch:/u);
+  assert.doesNotMatch(workflow, /^\s+push:/mu);
+  assert.match(workflow, /packages: write/u);
+  assert.match(workflow, /git merge-base --is-ancestor/u);
+  assert.match(workflow, /docker push/u);
+  assert.doesNotMatch(workflow, /:latest\b/u);
 });
