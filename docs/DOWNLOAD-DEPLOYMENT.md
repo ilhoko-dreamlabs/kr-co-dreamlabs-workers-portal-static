@@ -43,12 +43,17 @@ The following inputs must exist outside this repository and must never be printe
 CI output or copied into Pages artifacts:
 
 - `/run/secrets/download-config.json`: exact Portal origin, SHA-256 key verifiers and
-  one artifact mapping;
+  exactly one active `worker-portable` mapping to the fixed private mount, including
+  version, source commit, Windows x64 Preview support, Node version, byte count and
+  SHA-256;
 - `/srv/private-artifacts/worker-portable.zip`: qualified immutable product ZIP;
 - the delivery record for the raw high-entropy key. The server stores only its verifier.
 
-The raw key is generated only after the production endpoint and artifact are accepted.
-Deliver it through an approved private channel. Adding or removing a key is a private
+Generate a high-entropy acceptance key before private configuration and hash it locally;
+only its SHA-256 verifier is placed in the server config. Keep the raw key in the
+protected deployment input so the acceptance job can prove a correct-key download, and
+deliver that same raw key to users through an approved private channel only after the
+endpoint and artifact pass external acceptance. Adding or removing a key is a private
 config update plus a controlled container restart; there is no administrator UI.
 
 ## GitOps work after target selection

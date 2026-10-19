@@ -12,8 +12,16 @@
   "artifacts": [
     {
       "id": "worker-portable",
-      "path": "replace-with-an-absolute-path-outside-this-repository",
-      "filename": "dreamlabs-worker-portable.zip"
+      "path": "/srv/private-artifacts/worker-portable.zip",
+      "filename": "DreamLabs-Worker-YYYY.MM.DD-portable-preview.N-win32-x64.zip",
+      "active": true,
+      "version": "YYYY.MM.DD-portable-preview.N",
+      "sourceCommit": "replace-with-the-40-character-lowercase-source-commit",
+      "platform": "win32-x64",
+      "bundledNode": "24.22.0",
+      "supportStatus": "preview",
+      "sizeBytes": 1,
+      "sha256": "replace-with-the-lowercase-artifact-sha256"
     }
   ]
 }
