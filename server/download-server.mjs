@@ -7,6 +7,10 @@ import path from "node:path";
 
 const MAX_BODY_BYTES = 4096;
 const ZIP_TYPE = "application/zip";
+export const PRODUCTION_ARTIFACT_PATH = "/srv/private-artifacts/worker-portable.zip";
+export const PORTABLE_ARTIFACT_ID = "worker-portable";
+export const PORTABLE_PLATFORM = "win32-x64";
+export const PORTABLE_SUPPORT_STATUS = "preview";
 
 export function hashDownloadKey(value) {
   if (typeof value !== "string" || value.length < 16 || value.length > 512) return null;
@@ -33,6 +37,17 @@ export function isApprovedListenHost(host) {
 function safeFilename(value) {
   const candidate = path.basename(String(value || "worker-portable.zip"));
   return candidate.replace(/[^A-Za-z0-9._-]/gu, "-") || "worker-portable.zip";
+}
+
+async function hashFile(filePath) {
+  const hash = createHash("sha256");
+  await new Promise((resolve, reject) => {
+    const stream = createReadStream(filePath);
+    stream.on("data", (chunk) => hash.update(chunk));
+    stream.once("error", reject);
+    stream.once("end", resolve);
+  });
+  return hash.digest("hex");
 }
 
 function json(response, status, body, extraHeaders = {}) {
@@ -102,6 +117,7 @@ function parseRange(value, size) {
 
 export async function normalizeConfig(input, options = {}) {
   const repositoryRoot = path.resolve(options.repositoryRoot || path.resolve(import.meta.dirname, ".."));
+  const expectedArtifactPath = path.resolve(options.expectedArtifactPath || PRODUCTION_ARTIFACT_PATH);
   const host = input?.listen?.host || "127.0.0.1";
   const port = Number(input?.listen?.port || 4181);
   if (!isApprovedListenHost(host)) {
@@ -124,7 +140,7 @@ export async function normalizeConfig(input, options = {}) {
     throw new Error("keyVerifiers must contain lowercase SHA-256 digests");
   }
 
-  if (!Array.isArray(input?.artifacts) || !input.artifacts.length) throw new Error("At least one private artifact is required");
+  if (!Array.isArray(input?.artifacts) || input.artifacts.length !== 1) throw new Error("Exactly one private artifact is required");
   const ids = new Set();
   const artifacts = new Map();
   for (const artifact of input.artifacts) {
@@ -132,16 +148,35 @@ export async function normalizeConfig(input, options = {}) {
       throw new Error(`Invalid or duplicate artifact id: ${artifact.id}`);
     }
     ids.add(artifact.id);
+    if (artifact.id !== PORTABLE_ARTIFACT_ID) throw new Error("The configured artifact id is not the Portable contract");
     if (!path.isAbsolute(artifact.path)) throw new Error(`${artifact.id}: artifact path must be absolute`);
+    if (path.resolve(artifact.path) !== expectedArtifactPath) throw new Error(`${artifact.id}: artifact path differs from the approved private mount`);
+    if (artifact.active !== true) throw new Error(`${artifact.id}: artifact must be explicitly active`);
+    if (!Number.isSafeInteger(artifact.sizeBytes) || artifact.sizeBytes < 1) throw new Error(`${artifact.id}: sizeBytes must be a positive integer`);
+    if (!/^[a-f0-9]{64}$/u.test(artifact.sha256 || "")) throw new Error(`${artifact.id}: sha256 must be one lowercase digest`);
+    if (artifact.platform !== PORTABLE_PLATFORM || artifact.supportStatus !== PORTABLE_SUPPORT_STATUS) {
+      throw new Error(`${artifact.id}: artifact must declare the Windows x64 Preview contract`);
+    }
+    if (typeof artifact.version !== "string" || !/^\d{4}\.\d{2}\.\d{2}-portable-preview\.\d+$/u.test(artifact.version)) {
+      throw new Error(`${artifact.id}: version must identify one Portable Preview release`);
+    }
+    if (!/^[a-f0-9]{40}$/u.test(artifact.sourceCommit || "")) throw new Error(`${artifact.id}: sourceCommit must identify one exact source commit`);
+    if (artifact.bundledNode !== "24.22.0") throw new Error(`${artifact.id}: bundledNode differs from the approved runtime`);
     const resolved = await realpath(artifact.path);
     if (isPathInside(repositoryRoot, resolved)) throw new Error(`${artifact.id}: private artifact must be outside the repository`);
     const info = await stat(resolved);
-    if (!info.isFile() || info.size < 1) throw new Error(`${artifact.id}: artifact must be a non-empty file`);
+    if (!info.isFile() || info.size !== artifact.sizeBytes) throw new Error(`${artifact.id}: artifact size differs from the configured identity`);
+    if (await hashFile(resolved) !== artifact.sha256) throw new Error(`${artifact.id}: artifact digest differs from the configured identity`);
     artifacts.set(artifact.id, {
       id: artifact.id,
       path: resolved,
       filename: safeFilename(artifact.filename),
       size: info.size,
+      sha256: artifact.sha256,
+      version: artifact.version,
+      sourceCommit: artifact.sourceCommit,
+      platform: artifact.platform,
+      supportStatus: artifact.supportStatus,
     });
   }
 

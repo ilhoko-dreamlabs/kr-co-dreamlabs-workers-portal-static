@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { spawn } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -11,6 +12,24 @@ const portalOrigin = "https://portal.workers.dreamlabs.co.kr";
 const artifactId = "worker-portable";
 const syntheticKey = "synthetic-local-download-key-20261019";
 const fixtureBytes = Buffer.from("PK\u0003\u0004synthetic portable ZIP fixture\n", "utf8");
+const fixtureSha256 = "f78bf7f3df50834059506c83d80ba3c6645f36c3c35c4016c51f8f4e52c748d6";
+
+function artifactConfig(artifactPath, overrides = {}) {
+  return {
+    id: artifactId,
+    path: artifactPath,
+    filename: "DreamLabs-Worker-2026.10.19-portable-preview.1-win32-x64.zip",
+    active: true,
+    version: "2026.10.19-portable-preview.1",
+    sourceCommit: "a".repeat(40),
+    platform: "win32-x64",
+    bundledNode: "24.22.0",
+    supportStatus: "preview",
+    sizeBytes: fixtureBytes.length,
+    sha256: fixtureSha256,
+    ...overrides,
+  };
+}
 
 async function startFixtureServer() {
   const temporaryRoot = await mkdtemp(path.join(os.tmpdir(), "worker-download-test-"));
@@ -20,8 +39,8 @@ async function startFixtureServer() {
     listen: { host: "127.0.0.1", port: 4181 },
     publicOrigins: [portalOrigin],
     keyVerifiers: [hashDownloadKey(syntheticKey)],
-    artifacts: [{ id: artifactId, path: artifactPath, filename: "dreamlabs-worker-portable.zip" }],
-  }, { repositoryRoot });
+    artifacts: [artifactConfig(artifactPath)],
+  }, { repositoryRoot, expectedArtifactPath: artifactPath });
   const server = createDownloadServer(config);
   await new Promise((resolve, reject) => {
     server.once("error", reject);
@@ -52,7 +71,7 @@ test("authorized POST streams only the configured ZIP", async () => {
     });
     assert.equal(response.status, 200);
     assert.equal(response.headers.get("content-type"), "application/zip");
-    assert.equal(response.headers.get("content-disposition"), 'attachment; filename="dreamlabs-worker-portable.zip"');
+    assert.equal(response.headers.get("content-disposition"), 'attachment; filename="DreamLabs-Worker-2026.10.19-portable-preview.1-win32-x64.zip"');
     assert.equal(response.headers.get("cache-control"), "no-store");
     assert.deepEqual(Buffer.from(await response.arrayBuffer()), fixtureBytes);
   } finally {
@@ -109,11 +128,65 @@ test("configuration rejects repository-hosted artifacts and non-private binds", 
     listen: { host: "127.0.0.1", port: 4181 },
     publicOrigins: [portalOrigin],
     keyVerifiers: [hashDownloadKey(syntheticKey)],
-    artifacts: [{ id: artifactId, path: path.join(repositoryRoot, "site", "index.html"), filename: "worker.zip" }],
+    artifacts: [artifactConfig(path.join(repositoryRoot, "site", "index.html"), { sizeBytes: 1, sha256: "a".repeat(64) })],
   };
-  await assert.rejects(() => normalizeConfig(base, { repositoryRoot }), /outside the repository/u);
+  await assert.rejects(() => normalizeConfig(base, { repositoryRoot, expectedArtifactPath: base.artifacts[0].path }), /outside the repository/u);
   for (const host of ["0.0.0.0", "8.8.8.8", "download.workers.dreamlabs.co.kr"]) {
-    await assert.rejects(() => normalizeConfig({ ...base, listen: { host, port: 4181 } }, { repositoryRoot }), /loopback or one exact RFC1918/u);
+    await assert.rejects(() => normalizeConfig({ ...base, listen: { host, port: 4181 } }, { repositoryRoot, expectedArtifactPath: base.artifacts[0].path }), /loopback or one exact RFC1918/u);
+  }
+});
+
+test("configuration binds the exact active Windows Preview artifact identity", async () => {
+  const temporaryRoot = await mkdtemp(path.join(os.tmpdir(), "worker-download-contract-"));
+  const artifactPath = path.join(temporaryRoot, "fixture.zip");
+  await writeFile(artifactPath, fixtureBytes);
+  const base = {
+    listen: { host: "127.0.0.1", port: 4181 },
+    publicOrigins: [portalOrigin],
+    keyVerifiers: [hashDownloadKey(syntheticKey)],
+    artifacts: [artifactConfig(artifactPath)],
+  };
+  try {
+    const config = await normalizeConfig(base, { repositoryRoot, expectedArtifactPath: artifactPath });
+    assert.equal(config.artifacts.get(artifactId).sha256, fixtureSha256);
+    for (const overrides of [
+      { id: "other" }, { path: path.join(temporaryRoot, "other.zip") }, { active: false },
+      { sizeBytes: fixtureBytes.length + 1 }, { sha256: "b".repeat(64) },
+      { platform: "linux-x64" }, { supportStatus: "stable" }, { bundledNode: "24.21.0" },
+    ]) {
+      await assert.rejects(
+        () => normalizeConfig({ ...base, artifacts: [artifactConfig(artifactPath, overrides)] }, { repositoryRoot, expectedArtifactPath: artifactPath }),
+      );
+    }
+  } finally {
+    await rm(temporaryRoot, { recursive: true, force: true });
+  }
+});
+
+test("startup failure emits one fixed code without parser content", async () => {
+  const temporaryRoot = await mkdtemp(path.join(os.tmpdir(), "worker-download-startup-"));
+  const configPath = path.join(temporaryRoot, "private-config.json");
+  const sensitiveMarker = "sensitive-private-config-marker";
+  await writeFile(configPath, `{\"${sensitiveMarker}\":`, "utf8");
+  try {
+    const result = await new Promise((resolve, reject) => {
+      const child = spawn(process.execPath, [path.join(repositoryRoot, "server", "index.mjs")], {
+        env: { ...process.env, WORKERS_DOWNLOAD_CONFIG: configPath },
+        stdio: ["ignore", "pipe", "pipe"],
+      });
+      let stdout = "";
+      let stderr = "";
+      child.stdout.on("data", (chunk) => { stdout += chunk; });
+      child.stderr.on("data", (chunk) => { stderr += chunk; });
+      child.once("error", reject);
+      child.once("close", (code) => resolve({ code, stdout, stderr }));
+    });
+    assert.equal(result.code, 1);
+    assert.equal(result.stdout, "");
+    assert.equal(result.stderr, "WORKERS_DOWNLOAD_STARTUP_FAILED\n");
+    assert.doesNotMatch(result.stderr, new RegExp(sensitiveMarker, "u"));
+  } finally {
+    await rm(temporaryRoot, { recursive: true, force: true });
   }
 });
 

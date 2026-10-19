@@ -21,9 +21,12 @@ placed in a URL, log, static JSON, browser storage or repository file.
 ## Local configuration
 
 1. Copy `config.example.json` to ignored `config.local.json`.
-2. Put the ZIP outside this repository and `dist/`.
+2. Mount the qualified ZIP at `/srv/private-artifacts/worker-portable.zip`; local tests
+   pass an explicit temporary expected path to the config normalizer.
 3. Generate a verifier by piping a key through `npm run hash:download-key`.
-4. Replace the example verifier and artifact path in `config.local.json`.
+4. Record the exact active Portable artifact ID, path, version, source commit, Windows
+   x64 Preview support status, bundled Node version, byte count and SHA-256 in
+   `config.local.json`.
 5. Set `WORKERS_DOWNLOAD_CONFIG` to that file and run `npm run serve:download`.
 
 Adding or deleting a key means editing `keyVerifiers` and restarting the process. There
@@ -33,6 +36,10 @@ SRV53 interface and is reachable only from the Docker2 reverse proxy; hostnames,
 wildcard binds and public addresses fail configuration loading. Approved external HTTPS
 ingress and exact `Origin` forwarding belong to the separately managed reverse proxy.
 Do not publish the application listener directly.
+
+Startup configuration failures emit only `WORKERS_DOWNLOAD_STARTUP_FAILED`; raw JSON,
+paths, verifier values, parser messages and exception causes are never logged. Artifact
+metadata and the mounted bytes are checked together at startup before readiness.
 
 The committed Portal config remains disabled until a real Portable ZIP, server endpoint
 and external HTTPS acceptance exist. The download key authorizes acquisition only; the
