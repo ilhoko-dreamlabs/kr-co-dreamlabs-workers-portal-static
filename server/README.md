@@ -1,7 +1,7 @@
 # Worker ZIP download server
 
-> Inactive legacy candidate. The Portal now links to an access-controlled Google Drive
-> file. Do not deploy this server for the current Portal download flow.
+> Inactive legacy candidate. The Portal now serves a password-protected ZIP from its
+> verified Pages artifact. Do not deploy this server for the current Portal flow.
 
 This directory owns a small server-side download boundary. It is not copied into the
 GitHub Pages `dist/` artifact. The public Portal contains no key and no ZIP.

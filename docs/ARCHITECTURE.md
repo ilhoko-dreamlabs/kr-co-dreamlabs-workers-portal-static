@@ -1,8 +1,8 @@
 # Static Portal architecture
 
 The Portal deployable remains a credential-free static navigation layer. Its download
-page opens one reviewed Google Drive file; Google Drive owns authentication, sharing and
-file transfer.
+page opens one reviewed same-origin password-protected ZIP. The password is distributed
+out of band and never handled by Portal code.
 
 | Area | Decision | Boundary |
 |---|---|---|
@@ -15,7 +15,7 @@ file transfer.
 | hosting | GitHub Pages custom workflow | source, artifact and deployment remain distinct |
 | public domain | `portal.workers.dreamlabs.co.kr` | parent and sibling services remain independent |
 | runtime control | none | enforced in data contract and browser-code checks |
-| Portable download | reviewed Google Drive file link | no ZIP, credential or private path in Pages/dist |
+| Portable download | pinned release asset copied into Pages after SHA-256 verification | password remains outside source, release metadata and Portal |
 
 ## Publication flow
 
@@ -31,9 +31,8 @@ operator-reviewed public links
 The browser fetches only reviewed public status/config JSON and the artifact's
 `build-manifest.json` from the same origin. Search and filters run on packaged HTML.
 There are no service tokens, WebSockets or Worker control commands. The download page
-validates that the configured destination is an HTTPS `drive.google.com/file/d/` URL
-and opens it in a separate tab. Portal JavaScript never receives a download key or
-Google credential.
+validates that the configured destination is a same-origin `/downloads/*.zip` URL.
+Portal JavaScript never receives the archive password.
 
 The former key-verifying server source remains under `server/` only as inactive
 reference and is never copied to Pages `dist/`. It is not part of the active download
@@ -50,8 +49,9 @@ architecture and must not be deployed for the current Portal flow.
 - DreamLabs HR System is a connected business system, not WorkerOps infrastructure or
   Worker runtime.
 - Portal owns only public navigation, explanation and its own publication facts.
-- Google Drive owns file authentication, sharing and transfer; Portal owns only the
-  reviewed link and published artifact identity.
+- GitHub Release owns the immutable source asset; the Pages workflow owns exact digest
+  verification and same-origin publication; Portal owns only the reviewed link and
+  published artifact identity.
 
 Operator-only Workers, internal management endpoints and raw operational evidence are
 intentionally absent from the public directory.

@@ -32,12 +32,12 @@ health or user authorization.
 
 ## `site/data/download-config.json`
 
-- schema version `2.0.0`;
-- publishes the reviewed Google Drive file URL, explicit restricted-access label,
-  artifact ID/label, version, filename, byte size and SHA-256;
-- never contains a key, Drive credential, verifier or private filesystem path;
-- `uploaded` means the exact bytes were observed in Drive. It does not mean every Portal
-  visitor has access; Drive permissions remain authoritative.
+- schema version `3.0.0`;
+- publishes one same-origin `/downloads/` URL, the pinned GitHub release asset source,
+  explicit password-protected access label, version, filename, byte size and SHA-256;
+- never contains the archive password, a credential, verifier or private filesystem path;
+- `release-uploaded` means GitHub recorded the exact size and digest. `check:dist` verifies
+  the same bytes after they are copied into the Pages artifact.
 
 ## Public-data rules
 
@@ -46,5 +46,5 @@ Credentials, tokens, cookies, authorization headers, private network addresses, 
 filesystem paths, internal request IDs, internal management endpoints and operator-only
 Worker identities are prohibited. The build manifest identifies only the Portal source
 revision and its packaged files; it makes no claim about another service's deployment.
-The ZIP itself and Google Drive permission records are outside this public-data contract
-and must not be copied into `site/` or `dist/`.
+The ZIP itself is outside tracked `site/` source. It may enter `dist/` only from the
+pinned release asset during the Pages workflow after exact SHA-256 validation.

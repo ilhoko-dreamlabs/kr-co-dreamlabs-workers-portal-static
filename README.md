@@ -18,8 +18,8 @@ Portal은 Worker Registry, Worker API, 작업 큐, 세션, 배포 상태 또는 
 조회하지 않는다. `site/data/directory.json`은 공개 가능한 링크와 접근 유형만 담은
 운영자 검토 디렉터리이며 실시간 health 데이터가 아니다.
 
-`/download/`는 검토된 Google Drive 파일로 연결한다. 정적 Portal은 다운로드 키나
-Drive 자격 증명을 받지 않으며, 파일 열람·다운로드 권한은 Google Drive에서 관리한다.
+`/download/`는 동일한 Portal 도메인에서 암호로 보호된 Portable ZIP을 직접 제공한다.
+정적 Portal은 암호를 받거나 저장하지 않으며, 압축 암호는 별도 채널로 전달한다.
 
 ## Information architecture
 
@@ -29,7 +29,7 @@ Portal
 ├─ WorkerOps     운영 관점과 하위 시스템 책임
 ├─ Ecosystem     Host, Gateway, Meet, Manual, Assets, HR 연결
 ├─ Learn         사용자 안내와 DreamLabs Asset Pack
-├─ Download      접근 제어된 Google Drive Portable ZIP 진입점
+├─ Download      암호로 보호된 Portable ZIP 직접 다운로드
 ├─ About         Portal 공개·보안 경계
 └─ Portal status 정적 artifact와 링크 검토 정보
 ```
@@ -60,11 +60,12 @@ npm run serve
 Open `http://127.0.0.1:4178/`. Direct `file:` opening is unsupported because the
 status page reads same-origin static JSON and the packaged build manifest through HTTP.
 
-The active download path is the reviewed Drive URL in
-[`site/data/download-config.json`](site/data/download-config.json). ZIP bytes and Drive
-permissions stay outside this repository. The previous key-server experiment remains
-in Git history and under `server/` only as inactive reference; it is not deployed by
-the Portal or required for downloads.
+The active download identity is recorded in
+[`site/data/download-config.json`](site/data/download-config.json). The encrypted ZIP
+is stored as a pinned GitHub release asset and copied into the exact Pages artifact only
+after SHA-256 verification. The password is never stored in this repository, release
+metadata or Portal. The previous key-server experiment remains under `server/` only as
+inactive reference.
 
 ## Publication boundary
 
