@@ -20,19 +20,23 @@ test("portal stays a static navigation hub without runtime authority", async () 
   assert.equal(status.liveWorkerData, false);
 });
 
-test("download UI is unavailable until a reviewed server artifact is published", async () => {
+test("download UI opens the reviewed restricted Google Drive artifact without handling a key", async () => {
   const [page, script, config] = await Promise.all([
     read("site/download/index.html"),
     read("site/js/portal.js"),
     read("site/data/download-config.json").then(JSON.parse),
   ]);
-  assert.equal(config.enabled, false);
-  assert.equal(config.endpoint, "");
-  assert.equal(config.artifact.status, "not-published");
-  assert.match(page, /method="post"/u);
-  assert.match(page, /name="key"[^>]*type="password"[^>]*disabled/u);
-  assert.match(page, /현재 제품용 Portable ZIP이 게시되지 않았습니다/u);
-  assert.doesNotMatch(script, /keyInput\.value|localStorage|sessionStorage|fetch\([^)]*downloads/iu);
+  assert.equal(config.schemaVersion, "2.0.0");
+  assert.equal(config.enabled, true);
+  assert.equal(config.provider, "google-drive");
+  assert.equal(config.access, "restricted");
+  assert.equal(config.artifact.status, "uploaded");
+  assert.match(config.url, /^https:\/\/drive\.google\.com\/file\/d\//u);
+  assert.match(page, /data-download-link/u);
+  assert.match(page, /Google Drive 액세스/u);
+  assert.match(page, /data-download-sha256/u);
+  assert.doesNotMatch(page, /name="key"|type="password"|method="post"/iu);
+  assert.doesNotMatch(script, /keyInput|artifactInput|formData|localStorage|sessionStorage|\/v1\/downloads/iu);
 });
 
 test("directory publishes eight role Workers and omits privileged operations", async () => {
@@ -114,7 +118,7 @@ test("every navigable page has one h1 and packaged browser assets", async () => 
   }
 });
 
-test("download container source is pinned and excludes private inputs", async () => {
+test("preserved legacy download container source remains pinned and excluded from Pages", async () => {
   const [dockerfile, dockerignore, compose, workflow] = await Promise.all([
     read("server/Dockerfile"),
     read(".dockerignore"),
