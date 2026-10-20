@@ -32,12 +32,12 @@ health or user authorization.
 
 ## `site/data/download-config.json`
 
-- schema version `1.0.0`;
-- publishes only availability, the public artifact ID/label and, after release, version,
-  byte size and SHA-256;
-- remains `enabled: false`, with an empty endpoint and `not-published` artifact until
-  a real ZIP, separate download server and external HTTPS acceptance exist;
-- never contains a key, verifier, private filesystem path or storage origin.
+- schema version `2.0.0`;
+- publishes the reviewed Google Drive file URL, explicit restricted-access label,
+  artifact ID/label, version, filename, byte size and SHA-256;
+- never contains a key, Drive credential, verifier or private filesystem path;
+- `uploaded` means the exact bytes were observed in Drive. It does not mean every Portal
+  visitor has access; Drive permissions remain authoritative.
 
 ## Public-data rules
 
@@ -46,5 +46,5 @@ Credentials, tokens, cookies, authorization headers, private network addresses, 
 filesystem paths, internal request IDs, internal management endpoints and operator-only
 Worker identities are prohibited. The build manifest identifies only the Portal source
 revision and its packaged files; it makes no claim about another service's deployment.
-The download server's ignored private config is outside this public-data contract and
-must not be copied into `site/` or `dist/`.
+The ZIP itself and Google Drive permission records are outside this public-data contract
+and must not be copied into `site/` or `dist/`.

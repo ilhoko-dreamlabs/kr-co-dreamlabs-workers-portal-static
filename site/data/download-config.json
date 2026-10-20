@@ -1,13 +1,16 @@
 {
-  "schemaVersion": "1.0.0",
-  "enabled": false,
-  "endpoint": "",
+  "schemaVersion": "2.0.0",
+  "enabled": true,
+  "provider": "google-drive",
+  "access": "restricted",
+  "url": "https://drive.google.com/file/d/1kFJIcqL1AsId0gxvtkPc57dANXexGOka/view?usp=sharing",
   "artifact": {
     "id": "worker-portable",
     "label": "DreamLabs Worker Portable",
-    "status": "not-published",
-    "version": null,
-    "sizeBytes": null,
-    "sha256": null
+    "status": "uploaded",
+    "version": "2026.10.20-portable-preview.2",
+    "filename": "DreamLabs-Worker-2026.10.20-portable-preview.2-win32-x64.zip",
+    "sizeBytes": 110773390,
+    "sha256": "25a28664293fd49fadb52515dd4d51ea400c4cb8fc91d6ea7ce03360e16d9c0b"
   }
 }

@@ -15,28 +15,24 @@
 Source, validation, release artifact, Pages deployment and external acceptance must be
 reported separately. Do not use a successful earlier stage as evidence for a later one.
 
-## Portable download server
+## Portable download through Google Drive
 
-The Pages artifact and download server are separate deployables. `npm run build` copies
-only `site/`; it must not package `server/`, private configuration or ZIP files.
+The Pages artifact contains only a reviewed Drive file URL and public artifact
+identity. ZIP bytes and Google credentials must not be copied into `site/` or `dist/`.
 
-Before changing `site/data/download-config.json` to `enabled: true`:
+Before changing `site/data/download-config.json`:
 
-1. place the immutable ZIP outside this repository and record version, size and SHA-256;
-2. create ignored server configuration with an exact Portal origin, verifier and one
-   artifact mapping;
-3. run the download integration tests with synthetic data, then validate the real file
-   path and hash without printing the key;
-4. deploy the server behind an approved HTTPS reverse proxy while retaining loopback
-   application binding;
-5. verify correct/wrong key, wrong Origin, unknown artifact, Range behavior, streaming,
-   log redaction and that direct storage access is denied;
-6. update the public endpoint and metadata, rebuild Pages and perform external UI tests.
+1. upload the immutable ZIP to the approved DreamLabs Google Drive account;
+2. verify the uploaded filename, byte size and SHA-256 against the local source;
+3. copy the exact Drive share URL and record access as `restricted` unless sharing was
+   separately reviewed and changed;
+4. update the version, filename, byte size and SHA-256 in the public config;
+5. run the static validation, package and external Portal checks;
+6. manage user or group access only in Google Drive.
 
-Keys are added or removed by editing the private server config and restarting the
-process. There is no administrator web UI. Do not place keys in command arguments,
-URLs, access logs, browser storage, public JSON or repository history. This key controls
-download only and must not become Worker activation or online license authority.
+`uploaded` proves only that the exact artifact was observed in Drive. It does not prove
+that an arbitrary visitor can download it. The previous key-server implementation under
+`server/` is inactive reference material and is not required by this flow.
 
 ## Custom domain gate
 
