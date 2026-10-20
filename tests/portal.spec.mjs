@@ -143,13 +143,16 @@ test("preserved legacy download container source remains pinned and excluded fro
   assert.doesNotMatch(workflow, /:latest\b/u);
 });
 
-test("Pages workflow stages and verifies the exact password-protected release asset", async () => {
-  const [workflow, config] = await Promise.all([
+test("CI and Pages workflows stage and verify the exact password-protected release asset", async () => {
+  const [pagesWorkflow, validationWorkflow, config] = await Promise.all([
     read(".github/workflows/pages.yml"),
+    read(".github/workflows/validate.yml"),
     read("site/data/download-config.json").then(JSON.parse),
   ]);
-  assert.match(workflow, new RegExp(config.source.releaseTag.replaceAll(".", "\\."), "u"));
-  assert.match(workflow, new RegExp(config.artifact.filename.replaceAll(".", "\\."), "u"));
-  assert.match(workflow, new RegExp(config.artifact.sha256, "u"));
-  assert.match(workflow, /sha256sum --check/u);
+  for (const workflow of [pagesWorkflow, validationWorkflow]) {
+    assert.match(workflow, new RegExp(config.source.releaseTag.replaceAll(".", "\\."), "u"));
+    assert.match(workflow, new RegExp(config.artifact.filename.replaceAll(".", "\\."), "u"));
+    assert.match(workflow, new RegExp(config.artifact.sha256, "u"));
+    assert.match(workflow, /sha256sum --check/u);
+  }
 });
