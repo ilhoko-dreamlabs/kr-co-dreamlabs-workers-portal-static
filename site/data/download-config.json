@@ -1,16 +1,22 @@
 {
-  "schemaVersion": "2.0.0",
+  "schemaVersion": "3.0.0",
   "enabled": true,
-  "provider": "google-drive",
-  "access": "restricted",
-  "url": "https://drive.google.com/file/d/1kFJIcqL1AsId0gxvtkPc57dANXexGOka/view?usp=sharing",
+  "provider": "portal-static",
+  "access": "password-protected",
+  "url": "/downloads/DreamLabs-Worker-2026.10.20-portable-preview.2-win32-x64-protected.zip",
+  "source": {
+    "kind": "github-release-asset",
+    "releaseTag": "worker-portable-2026.10.20-preview.2",
+    "assetUrl": "https://github.com/ilhoko-dreamlabs/kr-co-dreamlabs-workers-portal-static/releases/download/worker-portable-2026.10.20-preview.2/DreamLabs-Worker-2026.10.20-portable-preview.2-win32-x64-protected.zip"
+  },
   "artifact": {
     "id": "worker-portable",
-    "label": "DreamLabs Worker Portable",
-    "status": "uploaded",
+    "label": "DreamLabs Worker Portable 암호 ZIP",
+    "status": "release-uploaded",
     "version": "2026.10.20-portable-preview.2",
-    "filename": "DreamLabs-Worker-2026.10.20-portable-preview.2-win32-x64.zip",
-    "sizeBytes": 110773390,
-    "sha256": "25a28664293fd49fadb52515dd4d51ea400c4cb8fc91d6ea7ce03360e16d9c0b"
+    "filename": "DreamLabs-Worker-2026.10.20-portable-preview.2-win32-x64-protected.zip",
+    "sizeBytes": 104384115,
+    "sha256": "d415b1767cc5f9825b874c0ca383713f6cd4b5d223b29c4cec4e42bc531eadb9",
+    "protection": "zipcrypto"
   }
 }

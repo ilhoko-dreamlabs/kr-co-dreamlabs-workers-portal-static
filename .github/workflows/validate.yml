@@ -33,6 +33,14 @@ jobs:
         run: npm run check
       - name: Build deterministic artifact
         run: npm run build
+      - name: Stage exact password-protected Portable ZIP
+        shell: bash
+        run: |
+          mkdir -p dist/downloads
+          curl --fail --location --retry 3 \
+            --output dist/downloads/DreamLabs-Worker-2026.10.20-portable-preview.2-win32-x64-protected.zip \
+            https://github.com/ilhoko-dreamlabs/kr-co-dreamlabs-workers-portal-static/releases/download/worker-portable-2026.10.20-preview.2/DreamLabs-Worker-2026.10.20-portable-preview.2-win32-x64-protected.zip
+          echo "d415b1767cc5f9825b874c0ca383713f6cd4b5d223b29c4cec4e42bc531eadb9  dist/downloads/DreamLabs-Worker-2026.10.20-portable-preview.2-win32-x64-protected.zip" | sha256sum --check
       - name: Validate artifact
         run: npm run check:dist
       - name: Build isolated download server image

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Google Drive에서 DreamLabs Worker Portable ZIP을 받는 안내 페이지" />
+    <meta name="description" content="DreamLabs Workers Portal에서 암호로 보호된 Portable ZIP을 받는 안내 페이지" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://assets.dreamlabs.co.kr; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
     <title>Download · DreamLabs Workers Portal</title>
     <link rel="icon" href="https://assets.dreamlabs.co.kr/agents/dreamlabs-worker/icon/dreamlabs-bot-icon.png" type="image/png" />
@@ -14,35 +14,36 @@
     <a class="skip-link" href="#main-content">본문으로 건너뛰기</a>
     <header class="site-header"><div class="header-inner"><a class="brand" href="/" aria-label="DreamLabs Workers Portal 홈"><img src="https://assets.dreamlabs.co.kr/agents/dreamlabs-worker/icon/dreamlabs-bot-icon.png" alt="" /><span class="brand-copy"><strong>DREAMLABS WORKERS</strong><small>PORTAL</small></span></a><button class="menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="site-navigation" data-menu-toggle><span></span></button><nav class="site-nav" id="site-navigation" aria-label="주요 메뉴" data-site-nav><a href="/" data-nav-key="portal">Portal</a><a href="/workers/" data-nav-key="workers">Workers</a><a href="/workerops/" data-nav-key="workerops">WorkerOps</a><a href="/ecosystem/" data-nav-key="ecosystem">Ecosystem</a><a href="/learn/" data-nav-key="learn">Learn</a><a href="/download/" data-nav-key="download">Download</a></nav><a class="header-action" href="https://manual.workers.dreamlabs.co.kr/" target="_blank" rel="noreferrer">설치 안내 ↗</a></div></header>
     <main id="main-content">
-      <section class="page-hero" aria-labelledby="page-title"><p class="eyebrow">PORTABLE WORKER</p><h1 id="page-title">Google Drive에서<br />Portable ZIP 받기</h1><p class="page-lead">Portal은 검토된 Drive 파일로 바로 연결합니다. 파일 열기와 다운로드 권한은 Google Drive에서 관리하며, 지원 환경과 실행 방법은 매뉴얼을 확인하세요.</p></section>
+      <section class="page-hero" aria-labelledby="page-title"><p class="eyebrow">PORTABLE WORKER</p><h1 id="page-title">암호 ZIP을<br />Portal에서 바로 받기</h1><p class="page-lead">별도 로그인이나 외부 드라이브 없이 Portal에서 파일을 바로 다운로드합니다. 전달받은 암호로 압축을 해제한 뒤 매뉴얼을 따라 실행하세요.</p></section>
 
       <section class="section" aria-labelledby="download-title">
         <div class="download-layout">
           <article class="download-panel">
-            <p class="eyebrow">GOOGLE DRIVE</p>
+            <p class="eyebrow">DIRECT DOWNLOAD</p>
             <h2 id="download-title">Worker Portable</h2>
             <p class="download-product" data-download-product>배포 정보를 확인하는 중입니다.</p>
             <dl class="download-facts">
               <div><dt>파일</dt><dd data-download-filename>확인 중</dd></div>
               <div><dt>크기</dt><dd data-download-size>확인 중</dd></div>
+              <div><dt>보호</dt><dd data-download-protection>확인 중</dd></div>
               <div><dt>SHA-256</dt><dd class="download-sha" data-download-sha256>확인 중</dd></div>
             </dl>
-            <a class="button button-primary" target="_blank" rel="noreferrer" aria-disabled="true" data-download-link>Drive 파일 확인 중</a>
-            <p class="download-status" role="status" aria-live="polite" data-download-status>Drive 파일 정보를 확인하고 있습니다.</p>
+            <a class="button button-primary" aria-disabled="true" data-download-link>다운로드 파일 확인 중</a>
+            <p class="download-status" role="status" aria-live="polite" data-download-status>암호 ZIP 정보를 확인하고 있습니다.</p>
           </article>
           <aside class="download-guidance" aria-label="다운로드 순서">
             <h2>다운로드 순서</h2>
             <ol>
-              <li><strong>Drive 파일을 엽니다.</strong><span>접근 권한이 있는 Google 계정으로 로그인하세요.</span></li>
-              <li><strong>ZIP 파일을 다운로드합니다.</strong><span>Drive의 다운로드 버튼으로 안전한 작업 폴더에 저장하세요.</span></li>
+              <li><strong>암호 ZIP을 다운로드합니다.</strong><span>별도 로그인 없이 Portal에서 파일을 저장하세요.</span></li>
+              <li><strong>전달받은 암호를 입력합니다.</strong><span>Windows 압축 풀기 화면에서 암호를 입력하세요.</span></li>
               <li><strong>매뉴얼을 확인합니다.</strong><span>지원 OS, 파일 검증과 실행 순서를 확인한 뒤 시작하세요.</span></li>
             </ol>
-            <p class="download-key-note">Portal은 권한을 저장하거나 판정하지 않습니다. 열람·다운로드 권한은 Google Drive에서만 관리합니다.</p>
+            <p class="download-key-note">압축 암호는 ZIP에 포함되지 않으며 별도로 전달합니다. Portal은 암호를 입력받거나 저장하지 않습니다.</p>
           </aside>
         </div>
       </section>
 
-      <div class="section-soft"><section class="section" aria-labelledby="before-title"><div class="section-head"><div><p class="eyebrow">BEFORE YOU START</p><h2 id="before-title">다운로드 전에 확인하세요</h2></div></div><div class="status-grid"><article class="status-card"><small>01 · ACCESS</small><strong>Drive 권한 확인</strong><p>권한이 없다면 파일 소유자에게 Google Drive 액세스를 요청하세요.</p></article><article class="status-card"><small>02 · VERIFY</small><strong>파일 무결성 확인</strong><p>Portal에 표시된 버전, 파일 크기와 SHA-256을 기준으로 확인합니다.</p></article><article class="status-card"><small>03 · OFFLINE</small><strong>설치 안내 확인</strong><p>지원 OS와 선행 조건은 함께 제공되는 오프라인 매뉴얼을 따릅니다.</p></article></div></section></div>
+      <div class="section-soft"><section class="section" aria-labelledby="before-title"><div class="section-head"><div><p class="eyebrow">BEFORE YOU START</p><h2 id="before-title">다운로드 전에 확인하세요</h2></div></div><div class="status-grid"><article class="status-card"><small>01 · PASSWORD</small><strong>압축 암호 준비</strong><p>담당자가 별도로 전달한 압축 암호를 준비하세요.</p></article><article class="status-card"><small>02 · VERIFY</small><strong>파일 무결성 확인</strong><p>Portal에 표시된 버전, 파일 크기와 SHA-256을 기준으로 확인합니다.</p></article><article class="status-card"><small>03 · OFFLINE</small><strong>설치 안내 확인</strong><p>지원 OS와 선행 조건은 함께 제공되는 오프라인 매뉴얼을 따릅니다.</p></article></div></section></div>
     </main>
     <footer class="site-footer"><div class="footer-inner"><div class="footer-main"><div class="footer-brand"><strong>DreamLabs Workers Portal</strong><p>Worker와 관련 서비스를 찾기 위한 공개 안내 Portal입니다.</p></div><nav class="footer-nav" aria-label="푸터 메뉴"><a href="/workers/">Workers</a><a href="/workerops/">WorkerOps</a><a href="/ecosystem/">Ecosystem</a><a href="/learn/">Learn</a><a href="/download/">Download</a><a href="/about/">About</a><a href="/status/">Portal status</a></nav></div><div class="footer-bottom"><span>Portable Worker download</span><span>Link review: <time data-catalog-reviewed>불러오는 중</time></span></div></div></footer>
   </body>

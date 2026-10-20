@@ -122,6 +122,7 @@ async function loadDownloadConfig() {
   const product = document.querySelector("[data-download-product]");
   const filename = document.querySelector("[data-download-filename]");
   const size = document.querySelector("[data-download-size]");
+  const protection = document.querySelector("[data-download-protection]");
   const sha256 = document.querySelector("[data-download-sha256]");
   const status = document.querySelector("[data-download-status]");
 
@@ -144,21 +145,22 @@ async function loadDownloadConfig() {
     if (size) size.textContent = Number.isSafeInteger(config.artifact?.sizeBytes)
       ? `${(config.artifact.sizeBytes / 1024 / 1024).toFixed(1)} MiB`
       : "미확인";
+    if (protection) protection.textContent = config.artifact?.protection === "zipcrypto"
+      ? "Windows 호환 암호 ZIP"
+      : "미확인";
     if (sha256) sha256.textContent = config.artifact?.sha256 || "미확인";
-    if (!config.enabled || config.provider !== "google-drive") {
+    if (!config.enabled || config.provider !== "portal-static") {
       unavailable("현재 제품용 Portable ZIP이 게시되지 않았습니다.");
       return;
     }
-    const driveUrl = new URL(config.url);
-    if (driveUrl.protocol !== "https:" || driveUrl.hostname !== "drive.google.com" || !driveUrl.pathname.startsWith("/file/d/")) {
-      throw new Error("unapproved Drive URL");
+    const downloadUrl = new URL(config.url, window.location.origin);
+    if (downloadUrl.origin !== window.location.origin || !downloadUrl.pathname.startsWith("/downloads/") || !downloadUrl.pathname.endsWith(".zip")) {
+      throw new Error("unapproved Portal download URL");
     }
-    link.href = driveUrl.href;
+    link.href = downloadUrl.href;
     link.removeAttribute("aria-disabled");
-    link.textContent = "Google Drive에서 열기 ↗";
-    status.textContent = config.access === "restricted"
-      ? "Drive 액세스 권한이 있는 Google 계정으로 열어주세요."
-      : "Google Drive에서 ZIP 파일을 다운로드할 수 있습니다.";
+    link.textContent = "암호 ZIP 다운로드";
+    status.textContent = "다운로드 후 별도로 전달받은 암호로 압축을 해제하세요.";
   } catch {
     unavailable("다운로드 설정을 확인할 수 없습니다. 운영 담당자에게 문의하세요.");
   }

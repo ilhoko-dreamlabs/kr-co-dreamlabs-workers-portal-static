@@ -20,20 +20,22 @@ test("portal stays a static navigation hub without runtime authority", async () 
   assert.equal(status.liveWorkerData, false);
 });
 
-test("download UI opens the reviewed restricted Google Drive artifact without handling a key", async () => {
+test("download UI opens the exact password-protected Portal artifact without handling a password", async () => {
   const [page, script, config] = await Promise.all([
     read("site/download/index.html"),
     read("site/js/portal.js"),
     read("site/data/download-config.json").then(JSON.parse),
   ]);
-  assert.equal(config.schemaVersion, "2.0.0");
+  assert.equal(config.schemaVersion, "3.0.0");
   assert.equal(config.enabled, true);
-  assert.equal(config.provider, "google-drive");
-  assert.equal(config.access, "restricted");
-  assert.equal(config.artifact.status, "uploaded");
-  assert.match(config.url, /^https:\/\/drive\.google\.com\/file\/d\//u);
+  assert.equal(config.provider, "portal-static");
+  assert.equal(config.access, "password-protected");
+  assert.equal(config.artifact.status, "release-uploaded");
+  assert.equal(config.artifact.protection, "zipcrypto");
+  assert.equal(config.url, `/downloads/${config.artifact.filename}`);
+  assert.match(config.source.assetUrl, /^https:\/\/github\.com\/.*\/releases\/download\//u);
   assert.match(page, /data-download-link/u);
-  assert.match(page, /Google Drive 액세스/u);
+  assert.match(page, /압축 암호/u);
   assert.match(page, /data-download-sha256/u);
   assert.doesNotMatch(page, /name="key"|type="password"|method="post"/iu);
   assert.doesNotMatch(script, /keyInput|artifactInput|formData|localStorage|sessionStorage|\/v1\/downloads/iu);
@@ -139,4 +141,18 @@ test("preserved legacy download container source remains pinned and excluded fro
   assert.match(workflow, /git merge-base --is-ancestor/u);
   assert.match(workflow, /docker push/u);
   assert.doesNotMatch(workflow, /:latest\b/u);
+});
+
+test("CI and Pages workflows stage and verify the exact password-protected release asset", async () => {
+  const [pagesWorkflow, validationWorkflow, config] = await Promise.all([
+    read(".github/workflows/pages.yml"),
+    read(".github/workflows/validate.yml"),
+    read("site/data/download-config.json").then(JSON.parse),
+  ]);
+  for (const workflow of [pagesWorkflow, validationWorkflow]) {
+    assert.match(workflow, new RegExp(config.source.releaseTag.replaceAll(".", "\\."), "u"));
+    assert.match(workflow, new RegExp(config.artifact.filename.replaceAll(".", "\\."), "u"));
+    assert.match(workflow, new RegExp(config.artifact.sha256, "u"));
+    assert.match(workflow, /sha256sum --check/u);
+  }
 });

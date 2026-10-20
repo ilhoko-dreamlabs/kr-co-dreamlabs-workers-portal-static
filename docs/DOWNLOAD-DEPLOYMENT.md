@@ -1,8 +1,9 @@
 # Portable download deployment plan
 
-> Superseded on 2026-10-20. The active Portal download path is the restricted Google
-> Drive file recorded in `site/data/download-config.json`. This document is retained
-> only as history for the unused key-server candidate and is not an operating plan.
+> Superseded on 2026-10-20. The active Portal download path is the password-protected
+> same-origin ZIP recorded in `site/data/download-config.json`. This document is
+> retained only as history for the unused key-server candidate and is not an operating
+> plan.
 
 Status: **prepared / endpoint and artifact pending**. This document does not authorize
 DNS, proxy, container, key or artifact mutation.

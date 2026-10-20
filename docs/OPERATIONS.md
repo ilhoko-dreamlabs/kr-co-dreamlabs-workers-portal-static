@@ -15,24 +15,26 @@
 Source, validation, release artifact, Pages deployment and external acceptance must be
 reported separately. Do not use a successful earlier stage as evidence for a later one.
 
-## Portable download through Google Drive
+## Password-protected Portable download
 
-The Pages artifact contains only a reviewed Drive file URL and public artifact
-identity. ZIP bytes and Google credentials must not be copied into `site/` or `dist/`.
+The tracked source contains only public artifact identity and one pinned release asset
+URL. The encrypted ZIP is copied into `dist/downloads/` by the Pages workflow after
+exact SHA-256 validation. The archive password stays outside GitHub and Portal.
 
 Before changing `site/data/download-config.json`:
 
-1. upload the immutable ZIP to the approved DreamLabs Google Drive account;
-2. verify the uploaded filename, byte size and SHA-256 against the local source;
-3. copy the exact Drive share URL and record access as `restricted` unless sharing was
-   separately reviewed and changed;
-4. update the version, filename, byte size and SHA-256 in the public config;
-5. run the static validation, package and external Portal checks;
-6. manage user or group access only in Google Drive.
+1. create a Windows-compatible password-protected ZIP without writing the password to
+   scripts, source or command output;
+2. verify correct-password success and wrong-password failure;
+3. upload the exact ZIP as a GitHub release asset and verify its recorded size/digest;
+4. update the pinned release URL, filename, byte size and SHA-256 in the public config
+   and Pages workflow;
+5. run validation and deploy the exact Pages artifact;
+6. verify the same-domain ZIP response, size, SHA-256 and password behavior externally.
 
-`uploaded` proves only that the exact artifact was observed in Drive. It does not prove
-that an arbitrary visitor can download it. The previous key-server implementation under
-`server/` is inactive reference material and is not required by this flow.
+The password provides convenient customer delivery protection, not user-level access
+control or audit. The previous key-server implementation under `server/` is inactive
+reference material and is not required by this flow.
 
 ## Custom domain gate
 

@@ -1,4 +1,5 @@
 import { readFile, readdir, stat } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import process from "node:process";
 
@@ -31,7 +32,7 @@ const allowedHosts = new Set([
   "manual.workers.dreamlabs.co.kr",
   "assets.dreamlabs.co.kr",
   "hr.dreamlabs.co.kr",
-  "drive.google.com",
+  "github.com",
 ]);
 let checks = 0;
 
@@ -142,21 +143,24 @@ check(portalStatus.mode === "public-static-directory", "Portal mode must remain 
 check(portalStatus.runtimeAuthority === false && portalStatus.liveWorkerData === false, "Portal must not claim runtime authority or live data");
 check(Number.isFinite(Date.parse(portalStatus.catalogReviewedAt)), "Portal catalog review timestamp is invalid");
 
-check(downloadConfig.schemaVersion === "2.0.0", "Unsupported download config schemaVersion");
+check(downloadConfig.schemaVersion === "3.0.0", "Unsupported download config schemaVersion");
 check(typeof downloadConfig.enabled === "boolean", "download enabled must be boolean");
-check(downloadConfig.provider === "google-drive", "download provider must be Google Drive");
-check(downloadConfig.access === "restricted", "Drive access must remain explicitly restricted");
+check(downloadConfig.provider === "portal-static", "download provider must be the Portal static artifact");
+check(downloadConfig.access === "password-protected", "download access must remain explicitly password-protected");
 check(typeof downloadConfig.url === "string", "download URL must be a string");
+check(downloadConfig.source?.kind === "github-release-asset", "download source must be a GitHub release asset");
+check(typeof downloadConfig.source?.releaseTag === "string" && downloadConfig.source.releaseTag.length > 0, "download release tag is required");
+check(isAllowedPublicUrl(downloadConfig.source?.assetUrl), "download release asset URL is not allowlisted");
 check(typeof downloadConfig.artifact?.id === "string" && /^[a-z0-9][a-z0-9._-]*$/u.test(downloadConfig.artifact.id), "download artifact id is invalid");
 check(typeof downloadConfig.artifact?.label === "string" && downloadConfig.artifact.label.length > 0, "download artifact label is required");
 if (downloadConfig.enabled) {
-  const driveUrl = new URL(downloadConfig.url);
-  check(isAllowedPublicUrl(downloadConfig.url) && driveUrl.hostname === "drive.google.com" && driveUrl.pathname.startsWith("/file/d/"), "enabled download URL must be an allowlisted Google Drive file");
-  check(downloadConfig.artifact.status === "uploaded", "enabled download artifact must be uploaded");
+  check(downloadConfig.url === `/downloads/${downloadConfig.artifact.filename}`, "enabled download URL must use the exact Portal downloads path");
+  check(downloadConfig.artifact.status === "release-uploaded", "enabled download artifact must be uploaded to the release");
   check(typeof downloadConfig.artifact.version === "string" && downloadConfig.artifact.version.length > 0, "enabled download artifact version is required");
   check(typeof downloadConfig.artifact.filename === "string" && downloadConfig.artifact.filename.endsWith(".zip"), "enabled download artifact filename is required");
   check(Number.isSafeInteger(downloadConfig.artifact.sizeBytes) && downloadConfig.artifact.sizeBytes > 0, "enabled download artifact size is required");
   check(/^[a-f0-9]{64}$/u.test(downloadConfig.artifact.sha256), "enabled download artifact SHA-256 is required");
+  check(downloadConfig.artifact.protection === "zipcrypto", "enabled download artifact protection is invalid");
 } else {
   check(downloadConfig.url === "", "disabled download URL must remain empty");
   check(downloadConfig.artifact.status === "not-published", "disabled download artifact must not claim publication");
@@ -166,6 +170,14 @@ const downloadPage = await read("download/index.html");
 check(/<a\b[^>]*data-download-link/iu.test(downloadPage), "download page must provide a Drive link target");
 check(!/<form\b|name="key"|type="password"/iu.test(downloadPage), "download page must not contain the retired key form");
 check(/form-action 'none'/u.test(downloadPage), "download page CSP must prohibit form submission");
+
+if (distIndex >= 0 && downloadConfig.enabled) {
+  const artifactPath = path.join(siteRoot, downloadConfig.url.slice(1));
+  const artifactInfo = await stat(artifactPath);
+  check(artifactInfo.isFile() && artifactInfo.size === downloadConfig.artifact.sizeBytes, "packaged download artifact size does not match config");
+  const artifactHash = createHash("sha256").update(await readFile(artifactPath)).digest("hex");
+  check(artifactHash === downloadConfig.artifact.sha256, "packaged download artifact SHA-256 does not match config");
+}
 
 const files = await walk(siteRoot);
 for (const file of files) {
