@@ -50,6 +50,40 @@ test("directory publishes eight role Workers and omits privileged operations", a
   assert.doesNotMatch(JSON.stringify(directory), /worker00|req-[a-f0-9]{16,}|Authorization/iu);
 });
 
+test("Phase-A Worker import contract is bounded, non-authoritative and ID-reserved", async () => {
+  const [directory, profile, reservations, schema, contractDoc] = await Promise.all([
+    read("site/data/directory.json").then(JSON.parse),
+    read("contracts/worker-directory-import-phase-a.json").then(JSON.parse),
+    read("contracts/directory-id-reservations.json").then(JSON.parse),
+    read("schemas/directory.schema.json").then(JSON.parse),
+    read("docs/DATA-CONTRACT.md"),
+  ]);
+  assert.equal(profile.contractId, "dreamlabs.portal-worker-import.phase-a");
+  assert.deepEqual(profile.selection, { kind: "worker", exposure: "public-listable" });
+  assert.equal(profile.baselineFixture.sourceCommit, "ed00f2d86be9a87e2f344c002b66f709f39fb2b5");
+  assert.equal(profile.baselineFixture.sha256, "91255397c969e99f267cbcb2488934d047934361bb258bf7843240f58104c499");
+  assert.equal(profile.semantics.portalId, "public-directory-source-id-not-runtime-identity");
+  assert.equal(profile.semantics.representativeUrl, "navigation-only-not-target-origin");
+  assert.equal(profile.semantics.itemArrayOrder, "non-semantic-consumer-sorts-by-portal-id");
+  assert.equal(profile.semantics.tagArrayOrder, "preserved-and-change-significant");
+  assert.equal(profile.semantics.digestOwner, "worker-consumer-projection");
+  assert.equal(profile.semantics.authorization, "none");
+  assert.equal(profile.semantics.credentials, "prohibited");
+  assert.match(schema.description, /not a runtime Worker catalog/u);
+  assert.match(schema.properties.items.items.properties.id.description, /never a runtime Worker ID/u);
+
+  const reserved = new Map(reservations.entries.map((entry) => [entry.id, entry]));
+  assert.equal(reserved.size, reservations.entries.length);
+  for (const item of directory.items) assert.deepEqual(reserved.get(item.id), { id: item.id, kind: item.kind, status: "active" });
+  for (const entry of reservations.entries) {
+    if (entry.status === "retired") assert.equal(directory.items.some((item) => item.id === entry.id), false);
+  }
+  assert.match(contractDoc, /configuration draft only/u);
+  assert.match(contractDoc, /Tag ordering is different/u);
+  assert.match(contractDoc, /must not automatically delete, disable or\s+rewrite/u);
+  assert.match(contractDoc, /digests is a Portal revision, signature, authenticity proof or\s+authorization/u);
+});
+
 test("HR remains a connected business system outside WorkerOps runtime", async () => {
   const [directory, ecosystem, workerops] = await Promise.all([
     read("site/data/directory.json").then(JSON.parse),

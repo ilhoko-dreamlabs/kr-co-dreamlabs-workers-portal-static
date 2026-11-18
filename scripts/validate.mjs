@@ -1,5 +1,6 @@
 import { readFile, readdir, stat } from "node:fs/promises";
 import { createHash } from "node:crypto";
+import { isIP } from "node:net";
 import path from "node:path";
 import process from "node:process";
 
@@ -93,6 +94,8 @@ const directory = JSON.parse(await read("data/directory.json"));
 const collections = JSON.parse(await read("data/collections.json"));
 const portalStatus = JSON.parse(await read("data/portal-status.json"));
 const downloadConfig = JSON.parse(await read("data/download-config.json"));
+const importProfile = JSON.parse(await readFile(path.join(root, "contracts/worker-directory-import-phase-a.json"), "utf8"));
+const idReservations = JSON.parse(await readFile(path.join(root, "contracts/directory-id-reservations.json"), "utf8"));
 
 check(!/\beval\s*\(/u.test(script), "eval is prohibited");
 check(!/\/api\/|Authorization|WebSocket|EventSource|localStorage|sessionStorage/u.test(script), "browser script must not contain runtime/authentication APIs or persisted credentials");
@@ -103,6 +106,7 @@ check(!/keyInput|artifactInput|formData|URLSearchParams\([^)]*key/iu.test(script
 
 check(directory.schemaVersion === "2.0.0", "Unsupported directory schemaVersion");
 check(Number.isFinite(Date.parse(directory.reviewedAt)), "directory reviewedAt must be an ISO timestamp");
+check(/(?:Z|[+-]\d{2}:\d{2})$/u.test(directory.reviewedAt), "directory reviewedAt must include an explicit RFC 3339 offset");
 check(directory.source?.kind === "operator-reviewed-directory", "Directory source kind is invalid");
 check(Array.isArray(directory.items) && directory.items.length > 0, "Directory items are required");
 
@@ -110,6 +114,32 @@ const ids = new Set();
 const kinds = new Set(["worker", "product", "service", "business-system", "guide", "standard", "explanation"]);
 const accessValues = new Set(["public", "login-required", "access-controlled", "restricted"]);
 const availabilityValues = new Set(["https-observed", "manifest-backed", "candidate-only", "unavailable"]);
+check(importProfile.schemaVersion === "1.0.0" && importProfile.contractId === "dreamlabs.portal-worker-import.phase-a", "Phase-A import profile is invalid");
+check(importProfile.source?.path === "site/data/directory.json"
+  && importProfile.source?.directorySchemaVersion === "2.0.0"
+  && importProfile.source?.sourceKind === "operator-reviewed-directory", "Phase-A import source is invalid");
+check(importProfile.selection?.kind === "worker" && importProfile.selection?.exposure === "public-listable", "Phase-A selection is invalid");
+check(importProfile.semantics?.itemArrayOrder === "non-semantic-consumer-sorts-by-portal-id"
+  && importProfile.semantics?.tagArrayOrder === "preserved-and-change-significant"
+  && importProfile.semantics?.digestOwner === "worker-consumer-projection"
+  && importProfile.semantics?.authorization === "none"
+  && importProfile.semantics?.credentials === "prohibited", "Phase-A semantics are invalid");
+check(Buffer.byteLength(await read("data/directory.json"), "utf8") <= importProfile.limits.maxUtf8Bytes,
+  "Directory exceeds the Phase-A UTF-8 byte limit");
+check(directory.items.length >= importProfile.limits.items.minimum && directory.items.length <= importProfile.limits.items.maximum,
+  "Directory item count is outside the Phase-A limit");
+
+check(idReservations.schemaVersion === "1.0.0"
+  && idReservations.policy?.idsNeverReassigned === true
+  && idReservations.policy?.removedIdsRemainReserved === true
+  && idReservations.policy?.semanticIdentityReviewRequired === true
+  && Array.isArray(idReservations.entries), "Directory ID reservations are invalid");
+const reservationById = new Map();
+for (const entry of idReservations.entries) {
+  check(typeof entry.id === "string" && !reservationById.has(entry.id), `Invalid or duplicate reserved directory id: ${entry.id}`);
+  check(kinds.has(entry.kind) && ["active", "retired"].includes(entry.status), `${entry.id}: invalid directory ID reservation`);
+  reservationById.set(entry.id, entry);
+}
 for (const item of directory.items) {
   check(typeof item.id === "string" && /^[a-z0-9-]+$/u.test(item.id) && !ids.has(item.id), `Invalid or duplicate directory id: ${item.id}`);
   ids.add(item.id);
@@ -123,8 +153,39 @@ for (const item of directory.items) {
   check(item.exposure === "public-listable", `${item.id}: only public-listable entries may be published`);
   check(availabilityValues.has(item.availability), `${item.id}: invalid availability`);
   check(Number.isFinite(Date.parse(item.linkReview?.observedAt)), `${item.id}: link review timestamp is invalid`);
+  check(/(?:Z|[+-]\d{2}:\d{2})$/u.test(item.linkReview?.observedAt || ""), `${item.id}: link review timestamp must include an explicit offset`);
   check(Array.isArray(item.actions) && item.actions.length > 0, `${item.id}: at least one action is required`);
   for (const action of item.actions) check(typeof action.label === "string" && isAllowedPublicUrl(action.url), `${item.id}: invalid action`);
+
+  const reservation = reservationById.get(item.id);
+  check(reservation?.status === "active" && reservation.kind === item.kind, `${item.id}: active directory ID reservation is required`);
+  check(item.id.length <= importProfile.limits.id.maximumLength
+    && new RegExp(importProfile.limits.id.pattern, "u").test(item.id), `${item.id}: incompatible Phase-A id`);
+  if (item.kind === importProfile.selection.kind && item.exposure === importProfile.selection.exposure) {
+    const control = /[\u0000-\u001f\u007f]/u;
+    check(item.title === item.title.trim() && item.title.length >= importProfile.limits.title.minimumLength
+      && item.title.length <= importProfile.limits.title.maximumLength && !control.test(item.title), `${item.id}: incompatible Phase-A title`);
+    check(item.summary === item.summary.trim() && item.summary.length >= importProfile.limits.summary.minimumLength
+      && item.summary.length <= importProfile.limits.summary.maximumLength && !control.test(item.summary), `${item.id}: incompatible Phase-A summary`);
+    check(item.tags.length >= importProfile.limits.tags.minimumItems && item.tags.length <= importProfile.limits.tags.maximumItems
+      && new Set(item.tags).size === item.tags.length, `${item.id}: incompatible Phase-A tags`);
+    for (const tag of item.tags) check(typeof tag === "string" && tag === tag.trim()
+      && tag.length >= importProfile.limits.tags.itemMinimumLength && tag.length <= importProfile.limits.tags.itemMaximumLength
+      && !control.test(tag), `${item.id}: incompatible Phase-A tag`);
+    let representative;
+    try { representative = new URL(item.url); } catch { representative = null; }
+    const authority = item.url.slice("https://".length).split(/[/?#]/u, 1)[0];
+    check(Boolean(representative) && item.url.length <= importProfile.limits.representativeUrl.maximumLength
+      && representative.protocol === "https:" && !representative.username && !representative.password
+      && !/:\d+$/u.test(authority) && isIP(representative.hostname) === 0
+      && !importProfile.limits.representativeUrl.forbiddenHosts.includes(representative.hostname)
+      && !importProfile.limits.representativeUrl.forbiddenHostSuffixes.some((suffix) => representative.hostname.endsWith(suffix)),
+    `${item.id}: incompatible Phase-A representative URL`);
+  }
+}
+for (const reservation of reservationById.values()) {
+  const current = directory.items.find((item) => item.id === reservation.id);
+  check(reservation.status === "retired" ? !current : Boolean(current), `${reservation.id}: reservation status does not match the directory`);
 }
 check(directory.items.filter((item) => item.kind === "worker").length === 8, "Exactly eight public-listable Workers are expected");
 check(directory.items.some((item) => item.id === "hr-system" && item.kind === "business-system"), "HR must remain a connected business system");

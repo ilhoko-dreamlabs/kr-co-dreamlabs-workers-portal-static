@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "policy": {
+    "idsNeverReassigned": true,
+    "removedIdsRemainReserved": true,
+    "semanticIdentityReviewRequired": true
+  },
+  "entries": [
+    { "id": "worker-0", "kind": "worker", "status": "active" },
+    { "id": "worker-1", "kind": "worker", "status": "active" },
+    { "id": "claude-worker", "kind": "worker", "status": "active" },
+    { "id": "dl-sales-worker", "kind": "worker", "status": "active" },
+    { "id": "dl-dev-worker", "kind": "worker", "status": "active" },
+    { "id": "wc-dev-worker", "kind": "worker", "status": "active" },
+    { "id": "support-worker", "kind": "worker", "status": "active" },
+    { "id": "worker-developer", "kind": "worker", "status": "active" },
+    { "id": "worker-host", "kind": "product", "status": "active" },
+    { "id": "workerops-overview", "kind": "product", "status": "active" },
+    { "id": "workerops-in-action", "kind": "product", "status": "active" },
+    { "id": "use-case-sales-data-analysis", "kind": "explanation", "status": "active" },
+    { "id": "use-case-institution-documents", "kind": "explanation", "status": "active" },
+    { "id": "use-case-business-operations", "kind": "explanation", "status": "active" },
+    { "id": "use-case-youtube-content-operations", "kind": "explanation", "status": "active" },
+    { "id": "use-case-software-team", "kind": "explanation", "status": "active" },
+    { "id": "worker-gateway", "kind": "service", "status": "active" },
+    { "id": "worker-meet", "kind": "service", "status": "active" },
+    { "id": "worker-manual", "kind": "guide", "status": "active" },
+    { "id": "dreamlabs-assets", "kind": "standard", "status": "active" },
+    { "id": "hr-system", "kind": "business-system", "status": "active" }
+  ]
+}
