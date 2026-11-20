@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "1.0.0",
+  "contractId": "dreamlabs.portal-worker-import.phase-a",
+  "source": {
+    "path": "site/data/directory.json",
+    "directorySchemaVersion": "2.0.0",
+    "sourceKind": "operator-reviewed-directory"
+  },
+  "baselineFixture": {
+    "sourceCommit": "ed00f2d86be9a87e2f344c002b66f709f39fb2b5",
+    "path": "site/data/directory.json",
+    "bytes": 14846,
+    "sha256": "91255397c969e99f267cbcb2488934d047934361bb258bf7843240f58104c499",
+    "gitBlob": "88c21760d88244f9409aa13d52da8cdf85724d20"
+  },
+  "selection": {
+    "kind": "worker",
+    "exposure": "public-listable"
+  },
+  "projection": {
+    "portalId": "id",
+    "label": "title",
+    "description": "summary",
+    "representativeUrl": "url",
+    "tags": "tags",
+    "reviewedAt": "$root.reviewedAt"
+  },
+  "limits": {
+    "maxUtf8Bytes": 1048576,
+    "items": { "minimum": 1, "maximum": 2000 },
+    "id": {
+      "maximumLength": 128,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "uniqueAcrossDirectory": true
+    },
+    "title": { "minimumLength": 1, "maximumLength": 96, "trimmed": true, "controlCharacters": false },
+    "summary": { "minimumLength": 1, "maximumLength": 2048, "trimmed": true, "controlCharacters": false },
+    "tags": {
+      "minimumItems": 1,
+      "maximumItems": 32,
+      "unique": true,
+      "itemMinimumLength": 1,
+      "itemMaximumLength": 64,
+      "itemTrimmed": true,
+      "itemControlCharacters": false
+    },
+    "representativeUrl": {
+      "maximumLength": 2048,
+      "scheme": "https",
+      "credentials": false,
+      "explicitPort": false,
+      "ipLiteral": false,
+      "forbiddenHosts": ["localhost"],
+      "forbiddenHostSuffixes": [".local", ".internal", ".test", ".invalid"]
+    },
+    "reviewedAt": { "format": "RFC3339-date-time", "explicitOffset": true }
+  },
+  "semantics": {
+    "portalId": "public-directory-source-id-not-runtime-identity",
+    "representativeUrl": "navigation-only-not-target-origin",
+    "itemArrayOrder": "non-semantic-consumer-sorts-by-portal-id",
+    "tagArrayOrder": "preserved-and-change-significant",
+    "missingItem": "source-not-found-only-no-automatic-local-mutation",
+    "digestOwner": "worker-consumer-projection",
+    "digestMeaning": "local-change-detection-only-not-portal-revision-signature-or-authenticity-proof",
+    "catalogDigest": "includes-normalized-reviewedAt-and-selected-worker-projection",
+    "itemDigest": "excludes-reviewedAt",
+    "excludedMetadata": "non-worker-changes-may-not-change-consumer-catalogDigest",
+    "authorization": "none",
+    "credentials": "prohibited"
+  }
+}

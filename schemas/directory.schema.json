@@ -2,11 +2,16 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://portal.workers.dreamlabs.co.kr/schemas/directory.schema.json",
   "title": "DreamLabs Worker Portal directory",
+  "description": "Operator-reviewed public navigation data. It is not a runtime Worker catalog, identity registry, authorization source or credential transport.",
   "type": "object",
   "required": ["schemaVersion", "reviewedAt", "source", "items"],
   "properties": {
     "schemaVersion": { "const": "2.0.0" },
-    "reviewedAt": { "type": "string", "format": "date-time" },
+    "reviewedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 instant with an explicit offset. Consumers may normalize the same instant to UTC."
+    },
     "source": {
       "type": "object",
       "required": ["kind", "note"],
@@ -19,17 +24,37 @@
     "items": {
       "type": "array",
       "minItems": 1,
+      "description": "Presentation order is non-semantic and may change between reviewed publications.",
       "items": {
         "type": "object",
         "required": ["id", "kind", "title", "summary", "url", "audiences", "tags", "access", "exposure", "availability", "linkReview", "actions"],
         "properties": {
-          "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "Stable public directory source ID. It is never a runtime Worker ID, instance ID, Connector ID, principal or grant. Reserved IDs are not reassigned to another semantic destination."
+          },
           "kind": { "enum": ["worker", "product", "service", "business-system", "guide", "standard", "explanation"] },
           "title": { "type": "string", "minLength": 1 },
           "summary": { "type": "string", "minLength": 1 },
-          "url": { "type": "string", "format": "uri", "pattern": "^https://" },
-          "audiences": { "type": "array", "minItems": 1, "items": { "type": "string" } },
-          "tags": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://",
+            "description": "Representative navigation URL only; consumers must not infer a runtime target origin or identity."
+          },
+          "audiences": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" },
+            "description": "Descriptive audience hints, not user visibility or access grants."
+          },
+          "tags": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" },
+            "description": "Public descriptive tags without execution or authorization meaning."
+          },
           "access": { "enum": ["public", "login-required", "access-controlled", "restricted"] },
           "exposure": { "enum": ["public-listable", "authenticated-directory-only", "not-published"] },
           "availability": { "enum": ["https-observed", "manifest-backed", "candidate-only", "unavailable"] },
